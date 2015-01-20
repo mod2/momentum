@@ -1,0 +1,10 @@
+* {
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	font-family: "Source Sans Pro", Helvetica, Arial;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+}
