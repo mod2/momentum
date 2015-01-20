@@ -7,4 +7,8 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^$', 'momentum.views.dashboard', name='dashboard'),
+    url(r'^(.+?)/timer/$', 'momentum.views.timer', name='timer'),
+    url(r'^(.+?)/$', 'momentum.views.goal', name='goal'),
 )

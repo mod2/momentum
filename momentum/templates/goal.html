@@ -1,0 +1,16 @@
+{% extends '_base.html' %}
+
+{% block content %}
+
+<h2>{{ goal.name }}</h2>
+
+<p>Goal: {{ goal.target_amount }} {{ goal.type }} per {{ goal.period }}</p>
+
+<p>Current total: {{ goal.get_current_amount }} {{ goal.type }}</p>
+<p>Current elapsed: {{ goal.get_current_elapsed_time }} {{ goal.type }}</p>
+
+{% for entry in goal.entries.all %}
+<div class="entry">{{ entry.time|date:"j M Y" }} {{ entry.time|date:"h:m:s" }}{% if entry.stop_time %}&ndash;{{ entry.stop_time|date:"h:m:s" }}{% endif %} ({{ entry.get_elapsed_time }} {{ goal.type }})</div>
+{% endfor %}
+
+{% endblock content %}
