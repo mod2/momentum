@@ -33,7 +33,17 @@ class Goal(models.Model):
     def __unicode__(self):
         return self.name
 
+    def convert_to_resolution(self, duration):
+        if self.type == "minutes":
+            return (duration % 3600) / 60.0
+        elif self.type == "hours":
+            return duration / 3600.0
+        else:
+            return duration
+
     def get_current_elapsed_time(self):
+        """ Returns current elapsed time in seconds. """
+
         entries = Entry.objects.filter(goal=self)
 
         if len(entries) > 0:
@@ -44,16 +54,19 @@ class Goal(models.Model):
             if last_entry.stop_time:
                 return 0
 
-            duration = (now - last_entry.time).total_seconds()
+            return (now - last_entry.time).total_seconds()
 
-            if self.type == "minutes":
-                return (duration % 3600) / 60.0
-            elif self.type == "hours":
-                return duration / 3600.0
-            else:
-                return duration
+            # if self.type == "minutes":
+            #     return (duration % 3600) / 60.0
+            # elif self.type == "hours":
+            #     return duration / 3600.0
+            # else:
+            #     return duration
 
         return 0
+
+    def get_current_elapsed_time_converted(self):
+        return self.convert_to_resolution(self.get_current_elapsed_time())
 
     def get_current_amount(self):
         # TODO: expand to week/month/year
@@ -79,8 +92,13 @@ class Goal(models.Model):
 
             return total_time
 
-        return -1
+        return 0
 
+    def get_current_amount_converted(self):
+        return self.convert_to_resolution(self.get_current_amount())
+
+    def get_current_percentage(self):
+        return (self.convert_to_resolution(self.get_current_amount()) / self.target_amount) * 100.0
 
 class Entry(models.Model):
     goal = models.ForeignKey(Goal, related_name='entries')
@@ -91,20 +109,24 @@ class Entry(models.Model):
     def __unicode__(self):
         return "Entry"
 
-    def get_elapsed_time(self):
-        # If there's already a stop time then we're good
-        if self.stop_time:
-            return self.amount
-
-        now = datetime.utcnow().replace(tzinfo=utc)
-        duration = (now - self.time).total_seconds()
-
+    def convert_to_resolution(self, duration):
         if self.goal.type == "minutes":
             return (duration % 3600) / 60.0
         elif self.goal.type == "hours":
             return duration / 3600.0
         else:
             return duration
+
+    def get_elapsed_time(self):
+        # If there's already a stop time then we're good
+        if self.stop_time:
+            return self.amount
+
+        now = datetime.utcnow().replace(tzinfo=utc)
+        return (now - self.time).total_seconds()
+
+    def get_elapsed_time_converted(self):
+        return self.convert_to_resolution(self.get_elapsed_time())
 
     class Meta:
         verbose_name_plural = "entries"

@@ -45,16 +45,7 @@ def timer(request, goal_slug):
         else:
             # No stop time, so add it
             latest_entry.stop_time = datetime.utcnow().replace(tzinfo=utc)
-
-            # Convert to the goal-appropriate resolution
-            duration = (latest_entry.stop_time - latest_entry.time).total_seconds()
-            if goal.type == "minutes":
-                latest_entry.amount = (duration % 3600) // 60
-            elif goal.type == "hours":
-                latest_entry.amount = duration // 3600
-            else:
-                latest_entry.amount = duration
-
+            latest_entry.amount = (latest_entry.stop_time - latest_entry.time).total_seconds()
             latest_entry.save()
     else:
         # Nothing yet, so create a new entry and start it

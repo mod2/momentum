@@ -5,7 +5,8 @@
 
 {% for goal in goals %}
 <div class="goal">
-	<h2>{{ goal.name }}</h2>
+	<h2><a href="{% url "goal" goal.slug %}">{{ goal.name }}</a></h2>
+	<p>{{ goal.get_current_amount_converted|floatformat:1 }} {{ goal.type }} out of {{ goal.target_amount }} per {{ goal.period }} ({{ goal.get_current_percentage|floatformat:1 }}%)</p>
 </div>
 {% endfor %}
 {% endblock content %}
