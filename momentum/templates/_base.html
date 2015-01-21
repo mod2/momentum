@@ -5,6 +5,7 @@
 	<title>Momentum</title>
 
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,400italic,600italic' rel='stylesheet' type='text/css'>
 	<link href="{% static 'style.css' %}" type="text/css" rel="stylesheet">
@@ -13,29 +14,15 @@
 	<link rel="shortcut icon" href="{% static 'favicon.png' %}?v=1">
 
 	<script src="{% static 'jquery-2.1.1.min.js' %}" type="text/javascript" charset="utf-8"></script>
-
-	{# New project page, edit project page #}
-	{% if type == 'edit' or type == 'new' %}
-	<script src="{% static 'jquery.autocomplete.min.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'jquery-ui.min.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'me.js/mediaelement-and-player.min.js' %}" type="text/javascript" charset="utf-8"></script>
-	{% endif %}
-
-	<script src="{% static 'codex.js' %}" type="text/javascript" charset="utf-8"></script>
-
-    {# Audio controls #}
-    {% if type == 'transcribe' and item and item.type == 'audio' %}
-	<script src="{% static 'audio.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'jquery.hotkeys.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'me.js/mediaelement-and-player.min.js' %}" type="text/javascript" charset="utf-8"></script>
-    <link rel="stylesheet" href="{% static 'me.js/mediaelementplayer.css' %}" type="text/css" media="screen" charset="utf-8">
-    {% endif %}
-
-	{% if integrations.dropbox %}
-	<script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="{{ integrations.dropbox.key }}"></script>
-	{% endif %}
+	<script src="{% static 'momentum.js' %}" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
+	<header>
+		<h1><a href="{% url "dashboard" %}">momentum</a></h1>
+	</header>
+
+	<div id="content">
 	{% block content %}{% endblock content %}
+	</div>
 </body>
 </html>

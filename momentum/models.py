@@ -33,6 +33,16 @@ class Goal(models.Model):
     def __unicode__(self):
         return self.name
 
+    def in_progress(self):
+        if len(self.entries.all()) > 0:
+            last_entry = list(self.entries.all())[-1]
+            if not last_entry.stop_time:
+                return True
+            else:
+                return False
+        else:
+            return False
+
     def convert_to_resolution(self, duration):
         if self.type == "minutes":
             return (duration % 3600) / 60.0
@@ -44,11 +54,9 @@ class Goal(models.Model):
     def get_current_elapsed_time(self):
         """ Returns current elapsed time in seconds. """
 
-        entries = Entry.objects.filter(goal=self)
-
-        if len(entries) > 0:
+        if len(self.entries.all()) > 0:
             now = datetime.utcnow().replace(tzinfo=utc)
-            last_entry = list(entries)[-1]
+            last_entry = list(self.entries.all())[-1]
 
             # If we're stopped, there's no current elapsed time
             if last_entry.stop_time:
@@ -74,13 +82,15 @@ class Goal(models.Model):
         if self.period == "day":
             # Get all entries for this goal today and sum up the amounts
 
-            now = datetime.utcnow().replace(tzinfo=utc)
+            #now = datetime.utcnow().replace(tzinfo=utc)
+            now = datetime.now()
             today = now.date()
             tomorrow = today + timedelta(1)
             today_start = datetime.combine(today, time())
             today_end = datetime.combine(tomorrow, time())
 
-            entries = Entry.objects.filter(goal=self, time__lte=today_end, time__gte=today_start)
+            #entries = Entry.objects.filter(goal=self, time__lte=today_end, time__gte=today_start)
+            entries = self.entries.filter(time__lte=today_end, time__gte=today_start)
 
             total_time = 0
             for entry in entries:
@@ -98,7 +108,7 @@ class Goal(models.Model):
         return self.convert_to_resolution(self.get_current_amount())
 
     def get_current_percentage(self):
-        return (self.convert_to_resolution(self.get_current_amount()) / self.target_amount) * 100.0
+        return min((self.get_current_amount_converted() / self.target_amount) * 100.0, 100.0)
 
 class Entry(models.Model):
     goal = models.ForeignKey(Goal, related_name='entries')

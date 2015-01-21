@@ -2,15 +2,17 @@
 
 {% block content %}
 
-<h2>{{ goal.name }}</h2>
+<div class="container">
+	<h2>{{ goal.name }}</h2>
 
-<p>Goal: {{ goal.target_amount }} {{ goal.type }} per {{ goal.period }}</p>
+	<p>Goal: {{ goal.target_amount }} {{ goal.type }} per {{ goal.period }}</p>
 
-<p>Current total: {{ goal.get_current_amount_converted|floatformat:1 }} {{ goal.type }}</p>
-<p>Current elapsed: {{ goal.get_current_elapsed_time_converted|floatformat:1 }} {{ goal.type }}</p>
+	<p>Current total: {{ goal.get_current_amount_converted|floatformat:1 }} {{ goal.type }}</p>
+	<p>Current elapsed: {{ goal.get_current_elapsed_time_converted|floatformat:1 }} {{ goal.type }}</p>
+</div>
 
 {% for entry in goal.entries.all %}
-<div class="entry">{{ entry.time|date:"j M Y" }} {{ entry.time|date:"g:i:s a" }}{% if entry.stop_time %}&ndash;{{ entry.stop_time|date:"g:i:s a" }}{% endif %} ({{ entry.get_elapsed_time_converted|floatformat:1 }} {{ goal.type }})</div>
+<div class="entry container">{{ entry.time|date:"j M Y" }} {{ entry.time|date:"g:i:s a" }}{% if entry.stop_time %}&ndash;{{ entry.stop_time|date:"g:i:s a" }}{% endif %} ({{ entry.get_elapsed_time_converted|floatformat:1 }} {{ goal.type }})</div>
 {% endfor %}
 
 {% endblock content %}

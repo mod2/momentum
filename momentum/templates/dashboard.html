@@ -1,12 +1,27 @@
 {% extends '_base.html' %}
 
 {% block content %}
-<h1>Dashboard</h1>
 
 {% for goal in goals %}
-<div class="goal">
+<div class="goal container">
+	{% if goal.in_progress %}
+	<span class="button stop">Stop</span>
+	{% else %}
+	<span class="button start">Start</span>
+	{% endif %}
+
 	<h2><a href="{% url "goal" goal.slug %}">{{ goal.name }}</a></h2>
-	<p>{{ goal.get_current_amount_converted|floatformat:1 }} {{ goal.type }} out of {{ goal.target_amount }} per {{ goal.period }} ({{ goal.get_current_percentage|floatformat:1 }}%)</p>
+
+	{% if goal.get_current_elapsed_time != 0 %}
+	<div class="timer">Timer running: <span class="num">{{ goal.get_current_elapsed_time_converted|floatformat:1 }}</span> {{ goal.type }}</div>
+	{% endif %}
+
+	<div class="info"><span class="current">{{ goal.get_current_amount_converted|floatformat:1 }}</span> of <span class="target">{{ goal.target_amount }}</span> {{ goal.type }} per {{ goal.period }}</div>
+
+	<div class="percentage-wrapper">
+		<div class="percentage"><div class="bar" style="width: {{ goal.get_current_percentage|floatformat:1 }}%;"></div></div>
+	</div>
 </div>
 {% endfor %}
+
 {% endblock content %}
