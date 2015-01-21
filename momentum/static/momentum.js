@@ -39,6 +39,9 @@ $(document).ready(function() {
 			$.ajax({
 				url: '/' + goalSlug + '/timer/',
 				method: 'GET',
+				data: {
+					'key': webKey,
+				},
 				contentType: 'application/json',
 				success: function(data) {
 					data = JSON.parse(data);
