@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.utils.timezone import utc
 from django.contrib import auth
 from datetime import datetime, timedelta, time
+import pytz
 
 class Goal(models.Model):
     STATUS = (
@@ -81,8 +82,14 @@ class Goal(models.Model):
             today_start = datetime.combine(today, time())
             today_end = datetime.combine(tomorrow, time())
 
-            #entries = Entry.objects.filter(goal=self, time__lte=today_end, time__gte=today_start)
-            entries = self.entries.filter(time__lte=today_end, time__gte=today_start)
+            # Convert back to UTC
+            tz = timezone.get_current_timezone()
+            d_tz = tz.normalize(tz.localize(today_start))
+            today_start_utc = d_tz.astimezone(utc)
+            d_tz = tz.normalize(tz.localize(today_end))
+            today_end_utc = d_tz.astimezone(utc)
+
+            entries = self.entries.filter(time__lte=today_end_utc, time__gte=today_start_utc)
 
             total_time = 0
             for entry in entries:
@@ -109,7 +116,14 @@ class Goal(models.Model):
         today_start = datetime.combine(day, time())
         today_end = datetime.combine(tomorrow, time())
 
-        entries = self.entries.filter(time__lte=today_end, time__gte=today_start)
+        # Convert back to UTC
+        tz = timezone.get_current_timezone()
+        d_tz = tz.normalize(tz.localize(today_start))
+        today_start_utc = d_tz.astimezone(utc)
+        d_tz = tz.normalize(tz.localize(today_end))
+        today_end_utc = d_tz.astimezone(utc)
+
+        entries = self.entries.filter(time__lte=today_end_utc, time__gte=today_start_utc)
 
         total_time = 0
         for entry in entries:
@@ -130,8 +144,11 @@ class Goal(models.Model):
 
     def get_days(self):
         # Returns list of days that have entries
-        days = set([x.time.date() for x in self.entries.all().order_by('time')])
-        return days
+        day_list = []
+        for x in self.entries.all().order_by('-time'):
+            if x.time.date() not in day_list:
+                day_list.append(x.time.date())
+        return day_list
 
     def get_entries_by_day(self):
         # Returns list of days with entries for each
