@@ -145,9 +145,13 @@ class Goal(models.Model):
     def get_days(self):
         # Returns list of days that have entries
         day_list = []
+
         for x in self.entries.all().order_by('-time'):
-            if x.time.date() not in day_list:
-                day_list.append(x.time.date())
+            date = x.time
+            local_date = timezone.localtime(date, timezone.get_current_timezone()).date()
+            if local_date not in day_list:
+                day_list.append(local_date)
+
         return day_list
 
     def get_entries_by_day(self):
