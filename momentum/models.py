@@ -110,6 +110,60 @@ class Goal(models.Model):
     def get_current_percentage(self):
         return min((self.get_current_amount_converted() / self.target_amount) * 100.0, 100.0)
 
+    def get_amount_for_day(self, day):
+        # Get all entries for this goal on this day and sum up the amounts
+
+        tomorrow = day + timedelta(1)
+        today_start = datetime.combine(day, time())
+        today_end = datetime.combine(tomorrow, time())
+
+        entries = self.entries.filter(time__lte=today_end, time__gte=today_start)
+
+        total_time = 0
+        for entry in entries:
+            if entry.amount:
+                total_time += entry.amount
+            else:
+                # No stop time yet, so use now, converting to the resolution
+                #total_time += self.get_current_elapsed_time()
+                pass
+
+        return total_time
+
+    def get_amount_for_day_converted(self, day):
+        return self.convert_to_resolution(self.get_amount_for_day(day))
+
+    def get_percentage_for_day(self, day):
+        return min((self.get_amount_for_day_converted(day) / self.target_amount) * 100.0, 100.0)
+
+    def get_days(self):
+        # Returns list of days that have entries
+        days = set([x.time.date() for x in self.entries.all().order_by('-time')])
+        return days
+
+    def get_entries_by_day(self):
+        # Returns list of days with entries for each
+        days = self.get_days()
+
+        day_list = []
+
+        for day in days:
+            next_day = day + timedelta(1)
+            this_day_start = datetime.combine(day, time())
+            this_day_end = datetime.combine(next_day, time())
+
+            entries = self.entries.filter(time__lte=this_day_end, time__gte=this_day_start)
+
+            day_list.append({
+                'date': day,
+                'entries': entries,
+                'amount': self.get_amount_for_day_converted(day),
+                'percentage': self.get_percentage_for_day(day),
+            })
+
+        print day_list
+        return day_list
+
 class Entry(models.Model):
     goal = models.ForeignKey(Goal, related_name='entries')
     amount = models.PositiveSmallIntegerField(null=True, default=None, blank=True)

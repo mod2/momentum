@@ -106,37 +106,30 @@ header h1 a:hover {
 	display: none;
 }
 
-#content .goal .info {
+#content .info {
 	color: #888;
 	margin-top: .15em;
 }
 
-#content .goal .current {
+#content .info .current {
 	color: #040200;
 	font-size: 1.3em;
 	font-weight: 600;
 }
 
-#content .goal .target {
+#content .info .target {
 	color: #666;
 	font-weight: 600;
 }
 
-#content .goal .percent {
-	font-style: italic;
-}
-
-#content .goal .percentage-wrapper {
-}
-
-#content .goal .percentage {
+#content .percentage {
 	background: #ddd;
 	margin-top: 3px;
 	width: 100%;
 	height: 4px;
 }
 
-#content .goal .percentage .bar {
+#content .percentage .bar {
 	background: #444;
 	height: 3px;
 }
@@ -164,4 +157,37 @@ header h1 a:hover {
 #content .goal .button.stop {
 	background: #c26b51;
 	background: #f02a6e;
+}
+
+
+/* Detail page */
+
+#content h3.entries {
+	color: #888;
+	font-size: .8em;
+	font-weight: 400;
+	letter-spacing: 0.05em;
+	margin-bottom: .15em;
+	margin-top: 1em;
+	text-transform: uppercase;
+}
+
+#content .day {
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
+
+#content .day h4.info {
+	font-size: .9em;
+	font-weight: normal;
+	margin: 0;
+}
+
+#content .day .info .day {
+	color: #444;
+	font-weight: 600;
+}
+
+#content .day .info .current {
+	font-size: 1em;
 }
