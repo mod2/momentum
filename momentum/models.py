@@ -164,11 +164,18 @@ class Goal(models.Model):
         print day_list
         return day_list
 
+
 class Entry(models.Model):
     goal = models.ForeignKey(Goal, related_name='entries')
     amount = models.PositiveSmallIntegerField(null=True, default=None, blank=True)
-    time = models.DateTimeField(auto_now_add=True)
+    time = models.DateTimeField()
     stop_time = models.DateTimeField(null=True, default=None, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.time:
+            self.time = datetime.now()
+
+        return super(Entry, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return "Entry"
