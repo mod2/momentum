@@ -12,7 +12,7 @@ import json
 
 from .models import Goal, Entry
 
-#@login_required
+@login_required
 def dashboard(request):
     # Get all the user's goals
     goals = Goal.objects.filter(Q(owner=request.user),
@@ -22,7 +22,7 @@ def dashboard(request):
                                                  'request': request,
                                                  'key': settings.WEB_KEY})
 
-
+@login_required
 def goal(request, goal_slug):
     # Get the goal
     goal = Goal.objects.get(slug=goal_slug, owner=request.user)

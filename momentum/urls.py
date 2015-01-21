@@ -7,6 +7,8 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^login/', 'django.contrib.auth.views.login', { 'template_name': 'login.html' }, name='login'),
+    url(r'^logout/', 'django.contrib.auth.views.logout', { 'template_name': 'login.html' }, name='logout'),
 
     url(r'^$', 'momentum.views.dashboard', name='dashboard'),
     url(r'^(.+?)/timer/$', 'momentum.views.timer', name='timer'),

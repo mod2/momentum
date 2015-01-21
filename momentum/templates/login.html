@@ -1,0 +1,30 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<h1 class="container">Log In</h1>
+
+{% if form.errors %}
+<p class="message container">Your email and password didn't match. Please try again.</p>
+{% endif %}
+
+<form method="post" action="{% url 'login' %}" class="container">
+	{% csrf_token %}
+	<div class="group">
+		<label>{{ form.username.label_tag }}</label>
+		<section>
+			{{ form.username }}
+		</section>
+	</div>
+
+	<div class="group">
+		<label>{{ form.password.label_tag }}</label>
+		<section>
+			{{ form.password }}
+		</section>
+	</div>
+	
+	<input type="submit" value="Login" class="button" />
+	<input type="hidden" name="next" value="{{ form.next_url }}" />
+</form>
+
+{% endblock %}
