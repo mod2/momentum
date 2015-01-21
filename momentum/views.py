@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.utils.timezone import utc
 from datetime import datetime
@@ -36,8 +36,10 @@ def timer(request, goal_slug):
     # Get the goal
     goal = Goal.objects.get(slug=goal_slug)
 
-    # Get the web key
+    # Get the web key and redirect flag
     web_key = request.GET.get('key', '')
+    redirect = request.GET.get('redirect', '')
+
     if web_key != '' and web_key == settings.WEB_KEY:
         # Get the latest entry
         if len(goal.entries.all()) > 0:
@@ -59,6 +61,11 @@ def timer(request, goal_slug):
             entry.goal = goal
             entry.save()
 
-        return JsonResponse(json.dumps({'status': 'success'}), safe=False)
+        if redirect == 'true':
+            # TODO: update this to use django.shortcuts.redirect
+            # (I tried, but it wasn't working)
+            return HttpResponseRedirect('/')
+        else:
+            return JsonResponse(json.dumps({'status': 'success'}), safe=False)
     else:
         return JsonResponse(json.dumps({'status': 'error'}), safe=False)
