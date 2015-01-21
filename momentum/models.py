@@ -55,7 +55,7 @@ class Goal(models.Model):
         """ Returns current elapsed time in seconds. """
 
         if len(self.entries.all()) > 0:
-            now = datetime.utcnow().replace(tzinfo=utc)
+            now = timezone.now()
             last_entry = list(self.entries.all())[-1]
 
             # If we're stopped, there's no current elapsed time
@@ -63,13 +63,6 @@ class Goal(models.Model):
                 return 0
 
             return (now - last_entry.time).total_seconds()
-
-            # if self.type == "minutes":
-            #     return (duration % 3600) / 60.0
-            # elif self.type == "hours":
-            #     return duration / 3600.0
-            # else:
-            #     return duration
 
         return 0
 
@@ -82,8 +75,7 @@ class Goal(models.Model):
         if self.period == "day":
             # Get all entries for this goal today and sum up the amounts
 
-            #now = datetime.utcnow().replace(tzinfo=utc)
-            now = datetime.now()
+            now = timezone.localtime(timezone.now(), timezone.get_current_timezone())
             today = now.date()
             tomorrow = today + timedelta(1)
             today_start = datetime.combine(today, time())
@@ -138,7 +130,7 @@ class Goal(models.Model):
 
     def get_days(self):
         # Returns list of days that have entries
-        days = set([x.time.date() for x in self.entries.all().order_by('-time')])
+        days = set([x.time.date() for x in self.entries.all().order_by('time')])
         return days
 
     def get_entries_by_day(self):
@@ -161,7 +153,6 @@ class Goal(models.Model):
                 'percentage': self.get_percentage_for_day(day),
             })
 
-        print day_list
         return day_list
 
 
@@ -173,7 +164,7 @@ class Entry(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.time:
-            self.time = datetime.now()
+            self.time = timezone.now()
 
         return super(Entry, self).save(*args, **kwargs)
 
@@ -193,7 +184,7 @@ class Entry(models.Model):
         if self.stop_time:
             return self.amount
 
-        now = datetime.utcnow().replace(tzinfo=utc)
+        now = timezone.now()
         return (now - self.time).total_seconds()
 
     def get_elapsed_time_converted(self):
