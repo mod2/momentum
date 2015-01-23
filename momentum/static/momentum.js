@@ -25,7 +25,7 @@ $(document).ready(function() {
 					var goal = data[i];
 					var goalElement = $(".goal[data-slug=" + goal.slug + "]");
 
-					if (goalElement.hasClass("stop")) {
+					if (goalElement.find(".button.stop")) {
 						goalElement.find(".timer .num").html(goal.current_elapsed);
 						goalElement.find(".timer .seconds").html(goal.current_elapsed_in_seconds);
 						goalElement.find(".info .current").html(goal.current_amount);
