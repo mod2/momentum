@@ -41,6 +41,8 @@ def timer(request, goal_slug):
     redirect = request.GET.get('redirect', '')
 
     if web_key != '' and web_key == settings.WEB_KEY:
+        current_amount = goal.get_current_amount_converted()
+
         # Get the latest entry
         if len(goal.entries.all()) > 0:
             latest_entry = list(goal.entries.all())[-1]
@@ -55,6 +57,7 @@ def timer(request, goal_slug):
                 latest_entry.stop_time = datetime.utcnow().replace(tzinfo=utc)
                 latest_entry.amount = (latest_entry.stop_time - latest_entry.time).total_seconds()
                 latest_entry.save()
+                current_amount = goal.get_current_amount_converted()
         else:
             # Nothing yet, so create a new entry and start it
             entry = Entry()
@@ -66,6 +69,27 @@ def timer(request, goal_slug):
             # (I tried, but it wasn't working)
             return HttpResponseRedirect('/')
         else:
-            return JsonResponse(json.dumps({'status': 'success'}), safe=False)
+            return JsonResponse(json.dumps({'status': 'success', 'amount': round(current_amount, 1) }), safe=False)
+    else:
+        return JsonResponse(json.dumps({'status': 'error'}), safe=False)
+
+def status(request):
+    # Get all goals and return the current/elapsed times for each
+    goal_list = []
+    goals = Goal.objects.all()
+
+    # Get the web key and redirect flag
+    web_key = request.GET.get('key', '')
+
+    if web_key != '' and web_key == settings.WEB_KEY:
+        for goal in goals:
+            goal_list.append({
+                'slug': goal.slug,
+                'current_amount': '{0:.1f}'.format(goal.get_current_amount_converted()),
+                'current_elapsed': '{0:.1f}'.format(goal.get_current_elapsed_time_converted()),
+                'current_elapsed_in_seconds': '{0:.0f}'.format(goal.get_current_elapsed_time()),
+            })
+
+        return JsonResponse(json.dumps(goal_list), safe=False)
     else:
         return JsonResponse(json.dumps({'status': 'error'}), safe=False)

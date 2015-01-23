@@ -1,3 +1,5 @@
+var intervalId = -1;
+
 $(document).ready(function() {
 	// From https://gist.github.com/alanhamlett/6316427
 	$.ajaxSetup({
@@ -8,8 +10,43 @@ $(document).ready(function() {
 		}
 	});
 
+	function updateTimers() {
+		$.ajax({
+			url: '/status/',
+			method: 'GET',
+			data: {
+				'key': webKey,
+			},
+			contentType: 'application/json',
+			success: function(data) {
+				data = JSON.parse(data);
 
-	function toggleButtonClass(button) {
+				for (i in data) {
+					var goal = data[i];
+					var goalElement = $(".goal[data-slug=" + goal.slug + "]");
+
+					goalElement.find(".timer .num").html(goal.current_elapsed);
+					goalElement.find(".timer .seconds").html(goal.current_elapsed_in_seconds);
+					goalElement.find(".info .current").html(goal.current_amount);
+				}
+			},
+			error: function(data) {
+				console.log("error", data);
+			},
+		});
+	}
+
+	function checkTimers() {
+		if (intervalId == -1) {
+			intervalId = setInterval(updateTimers, 1000);
+		}
+	}
+
+	if ($(".goal .button.stop").length > 0) {
+		checkTimers();
+	}
+
+	function toggleButtonClass(button, data) {
 		if (button.hasClass("start")) {
 			// Turn into a Stop button
 			button.addClass("stop").removeClass("start");
@@ -17,6 +54,8 @@ $(document).ready(function() {
 
 			// Show the timer
 			button.siblings(".timer").removeClass("hidden");
+
+			checkTimers();
 		} else if (button.hasClass("stop")) {
 			// Turn into a Start button
 			button.addClass("start").removeClass("stop");
@@ -24,6 +63,12 @@ $(document).ready(function() {
 
 			// Hide the timer
 			button.siblings(".timer").addClass("hidden");
+
+			// Stop pinging the status web service if there aren't any more active timers
+			if ($(".goal .button.stop").length == 0) {
+				clearInterval(intervalId);
+				intervalId = -1;
+			}
 		}
 	}
 
@@ -45,7 +90,7 @@ $(document).ready(function() {
 				contentType: 'application/json',
 				success: function(data) {
 					data = JSON.parse(data);
-					toggleButtonClass(button);
+					toggleButtonClass(button, data);
 				},
 				error: function(data) {
 					console.log("error", data);

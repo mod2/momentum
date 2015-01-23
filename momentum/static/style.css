@@ -111,6 +111,11 @@ header h1 a.logout {
 	font-weight: 600;
 }
 
+#content .goal .timer .seconds {
+	color: #fff;
+	font-weight: 600;
+}
+
 #content .goal .timer.hidden {
 	display: none;
 }

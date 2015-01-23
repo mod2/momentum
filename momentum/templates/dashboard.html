@@ -12,7 +12,7 @@
 
 	<h2><a href="{% url "goal" goal.slug %}">{{ goal.name }}</a></h2>
 
-	<div class="timer{% if goal.get_current_elapsed_time == 0 %} hidden{% endif %}">Timer running: <span class="num">{{ goal.get_current_elapsed_time_converted|floatformat:1 }}</span> {{ goal.type }}</div>
+	<div class="timer{% if goal.get_current_elapsed_time == 0 %} hidden{% endif %}">Timer running: <span class="num">{{ goal.get_current_elapsed_time_converted|floatformat:1 }}</span> {{ goal.type }} (<span class="seconds">{{ goal.get_current_elapsed_time|floatformat:0 }}</span> seconds)</div>
 
 	<div class="info"><span class="current">{{ goal.get_current_amount_converted|floatformat:1 }}</span> of <span class="target">{{ goal.target_amount }}</span> {{ goal.type }} per {{ goal.period }}</div>
 
