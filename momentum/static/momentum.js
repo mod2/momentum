@@ -25,9 +25,11 @@ $(document).ready(function() {
 					var goal = data[i];
 					var goalElement = $(".goal[data-slug=" + goal.slug + "]");
 
-					goalElement.find(".timer .num").html(goal.current_elapsed);
-					goalElement.find(".timer .seconds").html(goal.current_elapsed_in_seconds);
-					goalElement.find(".info .current").html(goal.current_amount);
+					if (goalElement.hasClass("stop")) {
+						goalElement.find(".timer .num").html(goal.current_elapsed);
+						goalElement.find(".timer .seconds").html(goal.current_elapsed_in_seconds);
+						goalElement.find(".info .current").html(goal.current_amount);
+					}
 				}
 			},
 			error: function(data) {
