@@ -76,7 +76,7 @@ $(document).ready(function() {
 	}
 
 	// Start/stop buttons
-	$(".button").on("click touchstart", function() {
+	$(".button.action").on("click touchstart", function() {
 		// Get the slug of the goal we want
 		var goalSlug = $(this).parents(".goal").attr("data-slug");
 		var button = $(this);

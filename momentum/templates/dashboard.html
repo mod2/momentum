@@ -5,9 +5,9 @@
 {% for goal in goals %}
 <div class="goal container" data-slug="{{ goal.slug }}">
 	{% if goal.in_progress %}
-	<span class="button stop">Stop</span>
+	<span class="button action stop">Stop</span>
 	{% else %}
-	<span class="button start">Start</span>
+	<span class="button action start">Start</span>
 	{% endif %}
 
 	<h2><a href="{% url "goal" goal.slug %}">{{ goal.name }}</a></h2>
