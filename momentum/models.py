@@ -46,7 +46,7 @@ class Goal(models.Model):
 
     def convert_to_resolution(self, duration):
         if self.type == "minutes":
-            return (duration % 3600) / 60.0
+            return (duration / 3600.0) * 60.0
         elif self.type == "hours":
             return duration / 3600.0
         else:
@@ -194,7 +194,7 @@ class Entry(models.Model):
 
     def convert_to_resolution(self, duration):
         if self.goal.type == "minutes":
-            return (duration % 3600) / 60.0
+            return (duration / 3600.0) * 60.0
         elif self.goal.type == "hours":
             return duration / 3600.0
         else:
