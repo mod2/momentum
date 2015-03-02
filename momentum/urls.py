@@ -8,7 +8,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login/', 'django.contrib.auth.views.login', { 'template_name': 'login.html' }, name='login'),
-                       url(r'^logout/', 'django.contrib.auth.views.logout', { 'template_name': 'logout.html', 'next_page': '/login/' }, name='logout'),
+    url(r'^logout/', 'django.contrib.auth.views.logout', { 'template_name': 'logout.html', 'next_page': '/login/' }, name='logout'),
 
     url(r'^$', 'momentum.views.dashboard', name='dashboard'),
     url(r'^status/$', 'momentum.views.status', name='status'),
