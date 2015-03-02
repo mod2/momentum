@@ -187,6 +187,9 @@ class Entry(models.Model):
         if not self.time:
             self.time = timezone.now()
 
+        if self.stop_time:
+            self.amount = (self.stop_time - self.time).total_seconds()
+
         return super(Entry, self).save(*args, **kwargs)
 
     def __unicode__(self):
