@@ -25,7 +25,7 @@ class Goal(models.Model):
     # target_amount=1, type=times, period=day
     # target_amount=10, type=times, period=year
     # target_amount=50000, type=words
-    target_amount = models.PositiveSmallIntegerField(null=True, default=None, blank=True)
+    target_amount = models.PositiveSmallIntegerField(default=0)
     type = models.CharField(max_length=255) # times/minutes/hours/words/pages/etc.
     period = models.CharField(max_length=255, blank=True, null=True) # day/week/month/year, optional
 
