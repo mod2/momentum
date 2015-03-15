@@ -7,6 +7,8 @@ from django.contrib import auth
 from datetime import datetime, timedelta, time
 import pytz
 
+from autoslug import AutoSlugField
+
 class Goal(models.Model):
     STATUS = (
         ('active', 'Active'),
@@ -15,7 +17,7 @@ class Goal(models.Model):
     )
 
     name = models.CharField(max_length=255)
-    slug = models.CharField(max_length=255, null=True, blank=True)
+    slug = AutoSlugField(populate_from='name')
     status = models.CharField(max_length=255, choices=STATUS)
     priority = models.PositiveSmallIntegerField(null=False, default=0)
     owner = models.ForeignKey(auth.models.User, related_name='goals', null=False)
