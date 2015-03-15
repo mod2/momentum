@@ -94,3 +94,14 @@ def status(request):
         return JsonResponse(json.dumps(goal_list), safe=False)
     else:
         return JsonResponse(json.dumps({'status': 'error'}), safe=False)
+
+def update_goals(request):
+    if request.is_ajax() and request.method == 'POST':
+        order = json.loads(request.body)['order']
+
+        goals = Goal.objects.filter(slug__in=order.keys())
+        for goal in goals:
+            goal.priority = order[unicode(goal.slug)]
+            goal.save()
+
+        return JsonResponse(json.dumps({ "status": "success" }), safe=False)

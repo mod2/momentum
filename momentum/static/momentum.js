@@ -103,4 +103,50 @@ $(document).ready(function() {
 
 		return false;
 	});
+
+
+	// Reordering goals
+	$("#goal-list").sortable({
+		placeholder: "goal container placeholder",
+		update: function(event, ui) {
+			var order = {};
+			var items = ui.item.parents("#goal-list").find(".goal");
+
+			for (var i=0; i<items.length; i++) {
+				var item = $(items[i]);
+				order[item.attr("data-slug")] = i + 1;
+			}
+
+			var url = '/update-goals/';
+
+			$.ajax({
+				url: url,
+				method: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify({ "order": order }),
+				success: function(data) {
+				},
+				error: function(data) {
+					console.log("Error! :(", data);
+				},
+			});
+		},
+	});
 });
+
+// From https://gist.github.com/alanhamlett/6316427
+function getCookie(name) {
+	var cookieValue = null;
+	if (document.cookie && document.cookie != '') {
+		var cookies = document.cookie.split(';');
+		for (var i=0; i<cookies.length; i++) {
+			var cookie = jQuery.trim(cookies[i]);
+			// Does this cookie string begin with the name we want?
+			if (cookie.substring(0, name.length + 1) == (name + '=')) {
+				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+				break;
+			}
+		}
+	}
+	return cookieValue;
+}

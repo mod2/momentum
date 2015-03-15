@@ -66,6 +66,12 @@ header h1 a.logout {
 	padding-top: 16px;
 }
 
+#content .goal.placeholder {
+	background: #eee;
+	height: 4em;
+	margin: 10px 0;
+}
+
 #content .goal:nth-child(2n) {
 	background: #f5f5f5;
 }

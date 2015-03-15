@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^logout/', 'django.contrib.auth.views.logout', { 'template_name': 'logout.html', 'next_page': '/login/' }, name='logout'),
 
     url(r'^$', 'momentum.views.dashboard', name='dashboard'),
+    url(r'^update-goals/$', 'momentum.views.update_goals', name='update_goals'),
     url(r'^status/$', 'momentum.views.status', name='status'),
     url(r'^(.+?)/timer/$', 'momentum.views.timer', name='timer'),
     url(r'^(.+?)/$', 'momentum.views.goal', name='goal'),
