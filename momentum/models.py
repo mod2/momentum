@@ -161,6 +161,7 @@ class Goal(models.Model):
     def get_entries_by_day(self):
         # Returns list of days with entries for each
         days = self.get_days()
+        days.reverse()
 
         day_list = []
 

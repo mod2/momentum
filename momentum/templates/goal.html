@@ -14,7 +14,6 @@
 
 <h3 class="entries container">Entries</h3>
 {% for day in goal.get_entries_by_day %}
-{% if day.entries|length > 0 %}
 <div class="day container">
 	<h4 class="info"><span class="day">{{ day.date|date:"j M Y" }}</span>: <span class="current">{{ day.amount|floatformat:1 }}</span> of <span class="target">{{ goal.target_amount }}</span> {{ goal.type }} per {{ goal.period }}</h4>
 
@@ -22,7 +21,6 @@
 		<div class="percentage"><div class="bar" style="width: {{ day.percentage|floatformat:1 }}%;"></div></div>
 	</div>
 </div>
-{% endif %}
 {% endfor %}
 
 {% endblock content %}
