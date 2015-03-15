@@ -144,17 +144,19 @@ class Goal(models.Model):
     def get_percentage_for_day(self, day):
         return min((self.get_amount_for_day_converted(day) / self.target_amount) * 100.0, 100.0)
 
+    def daterange(self, start_date, end_date):
+        for n in range(int ((end_date - start_date).days)):
+            yield start_date + timedelta(n)
+
     def get_days(self):
-        # Returns list of days that have entries
-        day_list = []
+        """ Returns list of days that have entries """
 
-        for x in self.entries.all().order_by('-time'):
-            date = x.time
-            local_date = timezone.localtime(date, timezone.get_current_timezone()).date()
-            if local_date not in day_list:
-                day_list.append(local_date)
+        entries = self.entries.all().order_by('time')
 
-        return day_list
+        start_date = timezone.localtime(entries[0].time, timezone.get_current_timezone()).date()
+        end_date = timezone.now().date()
+
+        return [x for x in self.daterange(start_date, end_date)]
 
     def get_entries_by_day(self):
         # Returns list of days with entries for each
