@@ -4,7 +4,7 @@ from .models import Goal, Entry
 
 @admin.register(Goal)
 class GoalAdmin(admin.ModelAdmin):
-    list_display = ('name', 'target_amount', 'type', 'period', 'priority')
+    list_display = ('name', 'target_amount', 'type', 'period', 'priority', 'status')
 
 
 @admin.register(Entry)
