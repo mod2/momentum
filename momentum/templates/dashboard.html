@@ -15,7 +15,7 @@
 
 	<div class="timer{% if goal.get_current_elapsed_time == 0 %} hidden{% endif %}"><span class="num">{{ goal.get_current_elapsed_time_converted|floatformat:1 }}</span> {{ goal.type }} (<span class="seconds">{{ goal.get_current_elapsed_time|floatformat:0 }}</span> seconds)</div>
 
-	<div class="info"><span class="current">{{ goal.get_current_amount_converted|floatformat:1 }}</span> of <span class="target">{{ goal.target_amount }}</span> {{ goal.type }} per {{ goal.period }}</div>
+	<div class="info"><span class="current">{% if goal.get_current_amount_converted == 0 %}0{% else %}{{ goal.get_current_amount_converted|floatformat:1 }}{% endif %}</span> of <span class="target">{{ goal.target_amount }}</span> {{ goal.type }} per {{ goal.period }}</div>
 
 	<div class="percentage-wrapper">
 		<div class="percentage"><div class="bar" style="width: {{ goal.get_current_percentage|floatformat:1 }}%;"></div></div>

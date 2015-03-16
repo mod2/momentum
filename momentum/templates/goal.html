@@ -5,7 +5,7 @@
 <div class="goal container">
 	<h2>{{ goal.name }}</h2>
 
-	<div class="info"><span class="current">{{ goal.get_current_amount_converted|floatformat:1 }}</span> of <span class="target">{{ goal.target_amount }}</span> {{ goal.type }} per {{ goal.period }}</div>
+	<div class="info"><span class="current">{% if goal.get_current_amount_converted == 0 %}0{% else %}{{ goal.get_current_amount_converted|floatformat:1 }}{% endif %}</span> of <span class="target">{{ goal.target_amount }}</span> {{ goal.type }} per {{ goal.period }}</div>
 
 	<div class="percentage-wrapper">
 		<div class="percentage"><div class="bar" style="width: {{ goal.get_current_percentage|floatformat:1 }}%;"></div></div>
@@ -15,7 +15,7 @@
 <h3 class="entries container">Entries</h3>
 {% for day in goal.get_entries_by_day %}
 <div class="day container">
-	<h4 class="info"><span class="day">{{ day.date|date:"j M Y" }}</span>: <span class="current">{{ day.amount|floatformat:1 }}</span> of <span class="target">{{ goal.target_amount }}</span> {{ goal.type }} per {{ goal.period }}</h4>
+	<h4 class="info"><span class="day">{{ day.date|date:"j M Y" }}</span>: <span class="current">{% if day.amount == 0 %}0{% else %}{{ day.amount|floatformat:1 }}{% endif %}</span> of <span class="target">{{ goal.target_amount }}</span> {{ goal.type }} per {{ goal.period }}</h4>
 
 	<div class="percentage-wrapper">
 		<div class="percentage"><div class="bar" style="width: {{ day.percentage|floatformat:1 }}%;"></div></div>
