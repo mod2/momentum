@@ -159,6 +159,10 @@ header h1 a.logout {
 	height: 3px;
 }
 
+#content .percentage .bar.over {
+	background: #f752dc;
+}
+
 #content .goal .button {
 	background: #444;
 	border-radius: 3px;

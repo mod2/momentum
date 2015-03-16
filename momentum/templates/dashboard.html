@@ -18,7 +18,7 @@
 	<div class="info"><span class="current">{% if goal.get_current_amount_converted == 0 %}0{% else %}{{ goal.get_current_amount_converted|floatformat:1 }}{% endif %}</span> of <span class="target">{{ goal.target_amount }}</span> {{ goal.type }} per {{ goal.period }}</div>
 
 	<div class="percentage-wrapper">
-		<div class="percentage"><div class="bar" style="width: {{ goal.get_current_percentage|floatformat:1 }}%;"></div></div>
+		<div class="percentage"><div class="bar {% if goal.get_current_amount_converted > goal.target_amount %}over{% endif %}" style="width: {{ goal.get_current_percentage|floatformat:1 }}%;"></div></div>
 	</div>
 </div>
 {% endfor %}

@@ -18,7 +18,7 @@
 	<h4 class="info"><span class="day">{{ day.date|date:"j M Y" }}</span>: <span class="current">{% if day.amount == 0 %}0{% else %}{{ day.amount|floatformat:1 }}{% endif %}</span> of <span class="target">{{ goal.target_amount }}</span> {{ goal.type }} per {{ goal.period }}</h4>
 
 	<div class="percentage-wrapper">
-		<div class="percentage"><div class="bar" style="width: {{ day.percentage|floatformat:1 }}%;"></div></div>
+		<div class="percentage"><div class="bar {% if day.amount > goal.target_amount %}over{% endif %}" style="width: {{ day.percentage|floatformat:1 }}%;"></div></div>
 	</div>
 </div>
 {% endfor %}
