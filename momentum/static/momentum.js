@@ -47,6 +47,25 @@ $(document).ready(function() {
 
 	if ($(".goal .button.stop").length > 0) {
 		checkTimers();
+
+		// Update the favicon
+		updateFavicon("timer");
+	}
+
+	function updateFavicon(type) {
+		var dataHref = "data-" + type + "-href";
+
+		var oldIco = $("#favicon-ico");
+		var oldPng = $("#favicon-png");
+
+		var newIco = "<link id='favicon-ico' rel='shortcut icon' href='" + oldIco.attr(dataHref) + "' data-original-href='" + oldIco.attr("data-original-href") + "' data-timer-href='" + oldIco.attr("data-timer-href") + "' />";
+		var newPng = "<link id='favicon-png' rel='shortcut icon' href='" + oldPng.attr(dataHref) + "' data-original-href='" + oldPng.attr("data-original-href") + "' data-timer-href='" + oldPng.attr("data-timer-href") + "' />";
+
+		oldIco.remove();
+		oldPng.remove();
+
+		$("head").append(newIco);
+		$("head").append(newPng);
 	}
 
 	function toggleButtonClass(button, data) {
@@ -57,6 +76,9 @@ $(document).ready(function() {
 
 			// Show the timer
 			button.siblings(".timer").removeClass("hidden");
+
+			// Update the favicon
+			updateFavicon("timer");
 
 			checkTimers();
 		} else if (button.hasClass("stop")) {
@@ -71,6 +93,9 @@ $(document).ready(function() {
 			if ($(".goal .button.stop").length == 0) {
 				clearInterval(intervalId);
 				intervalId = -1;
+
+				// Change the favicon back
+				updateFavicon("original");
 			}
 		}
 	}
