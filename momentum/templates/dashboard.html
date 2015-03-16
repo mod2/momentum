@@ -30,9 +30,10 @@
 <div class="container">
 	<a href="{% url 'admin:index' %}">Admin</a>
 
+	<h3>Latest Entries</h3>
 	<ul id="latest-entries">
 		{% for entry in latest_entries %}
-		<li><a href="{% url 'admin:momentum_entry_change' entry.id %}"><b>{{ entry.goal.name }}</b> &mdash; {{ entry.time|date:"j M Y — g:i a" }}{% if entry.stop_time %}&thinsp;&ndash;&thinsp;{{ entry.stop_time|date:"g:i a" }}{% endif %}</a></li>
+		<li><a href="{% url 'admin:momentum_entry_change' entry.id %}"><b>{{ entry.goal.name }}</b> &mdash; {{ entry.time|date:"j M, g:i" }}{% if entry.stop_time %}&thinsp;&ndash;&thinsp;{{ entry.stop_time|date:"g:i a" }}{% endif %}</a></li>
 		{% endfor %}
 	</ul>
 </div>

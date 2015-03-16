@@ -50,7 +50,6 @@ header h1 a.logout {
 
 #content {
 	background: #fff;
-	padding: 10px 0;
 }
 
 #content h1 {
@@ -276,14 +275,21 @@ form.login input.button:hover {
 	color: #fff;
 }
 
+#footer h3 {
+	color: #7a5b89;
+	font-size: .8em;
+	font-weight: 400;
+	margin: 1.5em 0 5px;
+}
+
 #footer ul#latest-entries {
-	font-size: .9em;
-	margin: 1.5em 0 0;
+	font-size: .85em;
+	margin: 0;
 	padding: 0;
 }
 
 #footer ul#latest-entries li {
-	line-height: 1.5em;
+	line-height: 1.6em;
 	list-style: none;
 }
 
