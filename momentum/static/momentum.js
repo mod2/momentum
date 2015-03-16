@@ -30,6 +30,10 @@ $(document).ready(function() {
 						goalElement.find(".timer .seconds").html(goal.current_elapsed_in_seconds);
 						goalElement.find(".info .current").html(goal.current_amount);
 						goalElement.find(".percentage .bar").css("width", goal.current_percentage + "%");
+
+						if (goal.current_amount > parseFloat(goalElement.find(".info .target").html())) {
+							goalElement.find(".percentage .bar").addClass("over");
+						}
 					}
 				}
 			},
