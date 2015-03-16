@@ -153,10 +153,13 @@ class Goal(models.Model):
 
         entries = self.entries.all().order_by('time')
 
-        start_date = timezone.localtime(entries[0].time, timezone.get_current_timezone()).date()
-        end_date = timezone.now().date()
+        if len(entries) > 0:
+            start_date = timezone.localtime(entries[0].time, timezone.get_current_timezone()).date()
+            end_date = timezone.now().date()
 
-        return [x for x in self.daterange(start_date, end_date)]
+            return [x for x in self.daterange(start_date, end_date)]
+        else:
+            return []
 
     def get_entries_by_day(self):
         # Returns list of days with entries for each

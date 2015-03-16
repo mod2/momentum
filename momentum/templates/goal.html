@@ -12,6 +12,7 @@
 	</div>
 </div>
 
+{% if goal.entries.all|length > 0 %}
 <h3 class="entries container">Entries</h3>
 {% for day in goal.get_entries_by_day %}
 <div class="day container">
@@ -22,5 +23,6 @@
 	</div>
 </div>
 {% endfor %}
+{% endif %}
 
 {% endblock content %}
