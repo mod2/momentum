@@ -202,8 +202,12 @@ header h1 a.logout {
 }
 
 #content .day {
-	padding-bottom: 5px;
-	padding-top: 5px;
+	padding-bottom: 7px;
+	padding-top: 7px;
+}
+
+#content .day:last-child {
+	padding-bottom: 4em;
 }
 
 #content .day h4.info {
