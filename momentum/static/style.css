@@ -12,6 +12,7 @@
 }
 
 body {
+	background: #292334;
 	margin: 0;
 	padding: 0;
 	padding-bottom: 50px;
@@ -45,6 +46,11 @@ header h1 a:hover {
 header h1 a.logout {
 	float: right;
 	font-size: .9em;
+}
+
+#content {
+	background: #fff;
+	padding: 10px 0;
 }
 
 #content h1 {
@@ -251,4 +257,36 @@ form.login input.button {
 
 form.login input.button:hover {
 	background: #444;
+}
+
+
+/* Footer */
+
+#footer {
+	margin-top: 1em;
+	padding-bottom: 2em;
+}
+
+#footer a {
+	color: #d4b6e2;
+	text-decoration: none;
+}
+
+#footer a:hover {
+	color: #fff;
+}
+
+#footer ul#latest-entries {
+	font-size: .9em;
+	margin: 1.5em 0 0;
+	padding: 0;
+}
+
+#footer ul#latest-entries li {
+	line-height: 1.5em;
+	list-style: none;
+}
+
+#footer ul#latest-entries li b {
+	font-weight: 600;
 }

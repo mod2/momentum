@@ -18,8 +18,11 @@ def dashboard(request):
     goals = Goal.objects.filter(Q(owner=request.user),
                                       status='active').distinct().order_by('priority')
 
+    latest_entries = Entry.objects.filter(goal__owner=request.user).order_by('-time')[:5]
+
     return render_to_response('dashboard.html', {'goals': goals,
                                                  'request': request,
+                                                 'latest_entries': latest_entries,
                                                  'key': settings.WEB_KEY})
 
 @login_required

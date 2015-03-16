@@ -8,7 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,400italic,600italic' rel='stylesheet' type='text/css'>
-	<link href="{% static 'style.css' %}?v=1" type="text/css" rel="stylesheet">
+	<link href="{% static 'style.css' %}?v=2" type="text/css" rel="stylesheet">
 
 	<link rel="shortcut icon" href="{% static 'favicon.ico' %}?v=3">
 	<link rel="shortcut icon" href="{% static 'favicon.png' %}?v=3">
@@ -31,6 +31,10 @@
 
 	<div id="content">
 	{% block content %}{% endblock content %}
+	</div>
+
+	<div id="footer">
+	{% block footer %}{% endblock footer %}
 	</div>
 </body>
 </html>
