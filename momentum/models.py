@@ -184,6 +184,10 @@ class Goal(models.Model):
 
         return day_list
 
+    def type_truncated(self):
+        if self.type == 'minutes':
+            return 'min'
+        return self.type
 
 class Entry(models.Model):
     goal = models.ForeignKey(Goal, related_name='entries')

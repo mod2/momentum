@@ -5,7 +5,7 @@
 }
 
 .container {
-	max-width: 500px;
+	max-width: 400px;
 	margin: 0px auto;
 	padding-left: 12px;
 	padding-right: 12px;
@@ -26,7 +26,7 @@ header h1 {
 	font-size: 1.1em;
 	font-weight: normal;
 	margin: 0px auto;
-	max-width: 500px;
+	max-width: 400px;
 	padding: 12px;
 	padding-bottom: 6px;
 	padding-top: 14px;
@@ -50,6 +50,8 @@ header h1 a.logout {
 
 #content {
 	background: #fff;
+	padding-bottom: 50px;
+	padding-top: 20px;
 }
 
 #content h1 {
@@ -67,6 +69,8 @@ header h1 a.logout {
 /* Goals on dashboard */
 
 #content .goal {
+	background: #fff;
+	overflow: hidden;
 	padding-bottom: 16px;
 	padding-top: 16px;
 }
@@ -74,7 +78,12 @@ header h1 a.logout {
 #content .goal.placeholder {
 	background: #eee;
 	height: 4em;
-	margin: 10px 0;
+	margin: 10px auto;
+}
+
+#content .goal.ui-sortable-helper {
+	border-radius: 3px;
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 #content .goal:nth-child(2n) {
@@ -83,6 +92,7 @@ header h1 a.logout {
 
 #content .goal h2 {
 	font-size: 1.3em;
+	line-height: 1em;
 	margin: 0;
 }
 
@@ -92,29 +102,34 @@ header h1 a.logout {
 }
 
 #content .goal .timer {
-	animation: cycle 2s alternate infinite;
-	-webkit-animation: cycle 2s alternate infinite;
-	background: #444;
-	border-radius: 3px;
+	background: rgba(0, 0, 0, 0.3);
+	border-radius: 0 0 3px;
 	color: rgba(255, 255, 255, 0.8);
-	display: inline-block;
+	display: block;
 	font-size: .9em;
 	font-style: italic;
-	margin-top: .3em;
-	margin-bottom: .1em;
-	padding: 2px 6px 3px;
+	margin-bottom: 0;
+	margin-left: -8px;
+	margin-right: -8px;
+	margin-top: 6px;
+	padding: 4px 8px 4px;
+	text-align: left;
 }
 
-@keyframes cycle {
-	0% { background: #f02a6e; }
-	50% { background: #ca4da2; }
-	100% { background: #f02a6e; }
+#content .goal .timer .elapsed {
+	display: block;
+	letter-spacing: 0;
+	line-height: 1em;
+	text-transform: none;
 }
 
-@-webkit-keyframes cycle {
-	0% { background: #f02a6e; }
-	50% { background: #ca4da2; }
-	100% { background: #f02a6e; }
+#content .goal .timer .seconds-wrapper {
+	display: block;
+	font-size: .8em;
+	letter-spacing: 0;
+	line-height: 1em;
+	margin-top: 2px;
+	text-transform: none;
 }
 
 #content .goal .timer .num {
@@ -142,21 +157,25 @@ header h1 a.logout {
 	font-weight: 600;
 }
 
+#content .goal .button.stop + h2 + .info .current {
+	color: #db268d;
+}
+
 #content .info .target {
 	color: #666;
 	font-weight: 600;
 }
 
 #content .percentage {
-	background: #ddd;
+	background: #e0e0e0;
 	margin-top: 3px;
-	width: 100%;
-	height: 4px;
+	width: 160px;
+	height: 10px;
 }
 
 #content .percentage .bar {
 	background: #444;
-	height: 3px;
+	height: 10px;
 }
 
 #content .percentage .bar.over {
@@ -171,7 +190,9 @@ header h1 a.logout {
 	font-size: .9em;
 	float: right;
 	letter-spacing: 0.05em;
-	padding: 6px 8px 8px;
+	min-width: 65px;
+	padding: 7px 8px 8px;
+	text-align: center;
 	text-transform: uppercase;
 }
 
@@ -184,8 +205,23 @@ header h1 a.logout {
 }
 
 #content .goal .button.stop {
+	-webkit-animation: cycle 2s alternate infinite;
+	animation: cycle 2s alternate infinite;
 	background: #c26b51;
 	background: #f02a6e;
+	padding-bottom: 0;
+}
+
+@keyframes cycle {
+	0% { background: #f02a6e; }
+	50% { background: #ca4da2; }
+	100% { background: #f02a6e; }
+}
+
+@-webkit-keyframes cycle {
+	0% { background: #f02a6e; }
+	50% { background: #ca4da2; }
+	100% { background: #f02a6e; }
 }
 
 

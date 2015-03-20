@@ -76,10 +76,10 @@ $(document).ready(function() {
 		if (button.hasClass("start")) {
 			// Turn into a Stop button
 			button.addClass("stop").removeClass("start");
-			button.html("Stop");
+			button.find(".label").html("Stop");
 
 			// Show the timer
-			button.siblings(".timer").removeClass("hidden");
+			button.find(".timer").removeClass("hidden");
 
 			// Update the favicon
 			updateFavicon("timer");
@@ -88,10 +88,10 @@ $(document).ready(function() {
 		} else if (button.hasClass("stop")) {
 			// Turn into a Start button
 			button.addClass("start").removeClass("stop");
-			button.html("Start");
+			button.find(".label").html("Start");
 
 			// Hide the timer
-			button.siblings(".timer").addClass("hidden");
+			button.find(".timer").addClass("hidden");
 
 			// Stop pinging the status web service if there aren't any more active timers
 			if ($(".goal .button.stop").length == 0) {
