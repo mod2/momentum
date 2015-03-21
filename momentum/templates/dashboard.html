@@ -4,7 +4,7 @@
 
 <section id="goal-list">
 {% for goal in goals %}
-<div class="goal container" data-slug="{{ goal.slug }}">
+<div class="goal container{% if goal.in_progress %} running{% endif %}" data-slug="{{ goal.slug }}">
 	{% if goal.in_progress %}
 	<span class="button action stop"><span class="label">Stop</span>
 	{% else %}

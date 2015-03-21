@@ -157,13 +157,13 @@ header h1 a.logout {
 	font-weight: 600;
 }
 
-#content .goal .button.stop + h2 + .info .current {
-	color: #db268d;
-}
-
 #content .info .target {
 	color: #666;
 	font-weight: 600;
+}
+
+#content .goal.running .info .current {
+	color: #db268d;
 }
 
 #content .percentage {

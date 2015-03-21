@@ -81,6 +81,9 @@ $(document).ready(function() {
 			// Show the timer
 			button.find(".timer").removeClass("hidden");
 
+			// Set it running
+			button.parents(".goal").addClass("running");
+
 			// Update the favicon
 			updateFavicon("timer");
 
@@ -92,6 +95,9 @@ $(document).ready(function() {
 
 			// Hide the timer
 			button.find(".timer").addClass("hidden");
+
+			// Stop it running
+			button.parents(".goal").removeClass("running");
 
 			// Stop pinging the status web service if there aren't any more active timers
 			if ($(".goal .button.stop").length == 0) {
