@@ -18,18 +18,18 @@ class Goal(models.Model):
 
     name = models.CharField(max_length=255)
     slug = AutoSlugField(populate_from='name')
-    status = models.CharField(max_length=255, choices=STATUS)
-    priority = models.PositiveSmallIntegerField(null=False, default=0)
-    owner = models.ForeignKey(auth.models.User, related_name='goals', null=False)
+    status = models.CharField(max_length=255, choices=STATUS, default='active')
+    priority = models.PositiveSmallIntegerField(null=False, default=30)
+    owner = models.ForeignKey(auth.models.User, related_name='goals', null=False, default=1)
 
     # Examples:
     # target_amount=15, type=minutes, period=day
     # target_amount=1, type=times, period=day
     # target_amount=10, type=times, period=year
     # target_amount=50000, type=words
-    target_amount = models.PositiveSmallIntegerField(default=0)
-    type = models.CharField(max_length=255) # times/minutes/hours/words/pages/etc.
-    period = models.CharField(max_length=255, blank=True, null=True) # day/week/month/year, optional
+    target_amount = models.PositiveSmallIntegerField(default=5)
+    type = models.CharField(max_length=255, default='minutes') # times/minutes/hours/words/pages/etc.
+    period = models.CharField(max_length=255, blank=True, null=True, default='day') # day/week/month/year, optional
 
     # deadline
 
