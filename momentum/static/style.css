@@ -242,10 +242,11 @@ header h1 a.logout {
 #content .goal .entry.action input[type=number] {
 	background: #e6f9c7;
 	border: none;
-	border-radius: 3px;
+	border-radius: 3px 3px 0 0;
 	color: #537637;
 	display: block;	
 	font-size: 1.2em;
+	margin: 0;
 	max-width: 65px;
 	padding: 4px 5px 6px;
 	text-align: center;
@@ -257,9 +258,9 @@ header h1 a.logout {
 }
 
 #content .goal .entry.action .save {
-	background: #c6df9f;
 	border-radius: 0 0 3px 3px;
-	color: #537637;
+	background: #7bb307;
+	color: #fff;
 	cursor: pointer;
 	display: block;
 	font-size: .9em;
@@ -273,8 +274,7 @@ header h1 a.logout {
 }
 
 #content .goal .entry.action .save:hover {
-	background: #89ab55;
-	color: #fff;
+	background: #444;
 }
 
 /* Detail page */
