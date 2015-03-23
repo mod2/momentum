@@ -231,6 +231,47 @@ header h1 a.logout {
 	100% { background: #f02a6e; }
 }
 
+#content .goal .entry.action {
+	float: right;
+}
+
+#content .goal .entry.action input[type=number] {
+	background: #e6f9c7;
+	border: none;
+	border-radius: 3px;
+	color: #537637;
+	display: block;	
+	font-size: 1.2em;
+	max-width: 65px;
+	padding: 4px 5px 6px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+#content .goal .entry.action input[type=number]:focus {
+	outline: none;
+}
+
+#content .goal .entry.action .save {
+	background: #c6df9f;
+	border-radius: 0 0 3px 3px;
+	color: #537637;
+	cursor: pointer;
+	display: block;
+	font-size: .9em;
+	padding: 2px 0 4px;
+	text-align: center;
+	width: 100%;
+}
+
+#content .goal .entry.action input[type=number]:hover {
+	background: #d7f7a3;
+}
+
+#content .goal .entry.action .save:hover {
+	background: #89ab55;
+	color: #fff;
+}
 
 /* Detail page */
 
