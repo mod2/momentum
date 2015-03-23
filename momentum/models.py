@@ -37,6 +37,9 @@ class Goal(models.Model):
         return self.name
 
     def in_progress(self):
+        if self.type == 'words':
+            return False
+
         if len(self.entries.all()) > 0:
             last_entry = list(self.entries.all())[-1]
             if not last_entry.stop_time:

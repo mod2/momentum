@@ -140,6 +140,53 @@ $(document).ready(function() {
 	});
 
 
+	// Wordcount entry
+	$(".entry.action .save").on("click touchstart", function() {
+		// Get the slug of the goal we want
+		var goalSlug = $(this).parents(".goal").attr("data-slug");
+
+		var parentWrapper = $(this).parents(".entry.action");
+		var amount = $(this).siblings("input[type=number]").val();
+
+		if (goalSlug != '' && amount > 0) {
+			// Send in the request
+			$.ajax({
+				url: '/' + goalSlug + '/save/',
+				method: 'GET',
+				data: {
+					'key': webKey,
+					'amount': amount,
+				},
+				contentType: 'application/json',
+				success: function(data) {
+					data = JSON.parse(data);
+
+					if (data.status == 'success') {
+						// Update count
+						var goalElement = parentWrapper.parents(".goal");
+						goalElement.find(".info .current").html(data.total_amount);
+						goalElement.find(".percentage .bar").css("width", data.percentage + "%");
+
+						if (data.total_amount > parseInt(goalElement.find(".info .target").html())) {
+							goalElement.find(".percentage .bar").addClass("over");
+						}
+
+						// Clear out the input
+						parentWrapper.find("input[type=number]").val('');
+					} else {
+						parentWrapper.addClass("error");
+					}
+				},
+				error: function(data) {
+					console.log("error", data);
+				},
+			});
+		}
+
+		return false;
+	});
+
+
 	// Reordering goals
 	$("#goal-list").sortable({
 		placeholder: "goal container placeholder",

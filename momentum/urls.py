@@ -14,5 +14,6 @@ urlpatterns = patterns('',
     url(r'^update-goals/$', 'momentum.views.update_goals', name='update_goals'),
     url(r'^status/$', 'momentum.views.status', name='status'),
     url(r'^(.+?)/timer/$', 'momentum.views.timer', name='timer'),
+    url(r'^(.+?)/save/$', 'momentum.views.save', name='save_amount'),
     url(r'^(.+?)/$', 'momentum.views.goal', name='goal'),
 )

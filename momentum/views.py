@@ -78,6 +78,36 @@ def timer(request, goal_slug):
     else:
         return JsonResponse(json.dumps({'status': 'error'}), safe=False)
 
+def save(request, goal_slug):
+    # Get the goal
+    goal = Goal.objects.get(slug=goal_slug)
+
+    # Get the web key and redirect flag
+    web_key = request.GET.get('key', '')
+    amount = request.GET.get('amount', '')
+    redirect = request.GET.get('redirect', '')
+
+    if web_key != '' and web_key == settings.WEB_KEY:
+        # Nothing yet, so create a new entry and start it
+        entry = Entry()
+        entry.goal = goal
+        entry.amount = amount
+        entry.target_amount = goal.target_amount
+        entry.save()
+
+        if redirect == 'true':
+            # TODO: update this to use django.shortcuts.redirect
+            # (I tried, but it wasn't working)
+            return HttpResponseRedirect('/')
+        else:
+            return JsonResponse(json.dumps({'status': 'success',
+                                            'amount': amount,
+                                            'total_amount': goal.get_current_amount(),
+                                            'percentage': goal.get_current_percentage()
+                                            }), safe=False)
+    else:
+        return JsonResponse(json.dumps({'status': 'error'}), safe=False)
+
 def status(request):
     # Get all goals and return the current/elapsed times for each
     goal_list = []

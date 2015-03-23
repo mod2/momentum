@@ -235,6 +235,10 @@ header h1 a.logout {
 	float: right;
 }
 
+#content .goal .entry.action.error {
+	border: solid 1px #f00;
+}
+
 #content .goal .entry.action input[type=number] {
 	background: #e6f9c7;
 	border: none;
