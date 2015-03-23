@@ -192,6 +192,7 @@ class Goal(models.Model):
 class Entry(models.Model):
     goal = models.ForeignKey(Goal, related_name='entries')
     amount = models.PositiveSmallIntegerField(null=True, default=None, blank=True)
+    target_amount = models.PositiveSmallIntegerField(null=True, default=0, blank=True)
     time = models.DateTimeField()
     stop_time = models.DateTimeField(null=True, default=None, blank=True)
 
