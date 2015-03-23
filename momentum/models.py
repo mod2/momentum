@@ -141,8 +141,11 @@ class Goal(models.Model):
     def get_amount_for_day_converted(self, day):
         return self.convert_to_resolution(self.get_amount_for_day(day))
 
-    def get_percentage_for_day(self, day):
-        return min((self.get_amount_for_day_converted(day) / self.target_amount) * 100.0, 100.0)
+    def get_percentage_for_day(self, day, target_amount=None):
+        if not target_amount:
+            target_amount = self.target_amount
+
+        return min((self.get_amount_for_day_converted(day) / target_amount) * 100.0, 100.0)
 
     def daterange(self, start_date, end_date):
         for n in range(int ((end_date - start_date).days)):
@@ -175,11 +178,17 @@ class Goal(models.Model):
 
             entries = self.entries.filter(time__lte=this_day_end, time__gte=this_day_start)
 
+            if entries:
+                target_amount = entries[0].target_amount
+            else:
+                target_amount = self.target_amount
+
             day_list.append({
                 'date': day,
                 'entries': entries,
+                'target_amount': target_amount,
                 'amount': self.get_amount_for_day_converted(day),
-                'percentage': self.get_percentage_for_day(day),
+                'percentage': self.get_percentage_for_day(day, target_amount),
             })
 
         return day_list
