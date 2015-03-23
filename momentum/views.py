@@ -54,6 +54,7 @@ def timer(request, goal_slug):
             if latest_entry.stop_time:
                 entry = Entry()
                 entry.goal = goal
+                entry.target_amount = goal.target_amount
                 entry.save()
             else:
                 # No stop time, so add it
@@ -65,6 +66,7 @@ def timer(request, goal_slug):
             # Nothing yet, so create a new entry and start it
             entry = Entry()
             entry.goal = goal
+            entry.target_amount = goal.target_amount
             entry.save()
 
         if redirect == 'true':
