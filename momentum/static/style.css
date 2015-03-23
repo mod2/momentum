@@ -240,6 +240,7 @@ header h1 a.logout {
 }
 
 #content .goal .entry.action input[type=number] {
+	-moz-appearance: textfield;
 	background: #e6f9c7;
 	border: none;
 	border-radius: 3px 3px 0 0;
@@ -251,6 +252,16 @@ header h1 a.logout {
 	padding: 4px 5px 6px;
 	text-align: center;
 	text-transform: uppercase;
+}
+
+#content .goal .entry.action input[type=number]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+#content .goal .entry.action input[type=number]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
 }
 
 #content .goal .entry.action input[type=number]:focus {
@@ -265,7 +276,7 @@ header h1 a.logout {
 	display: block;
 	font-size: .8em;
 	letter-spacing: 0.07em;
-	padding: 2px 0 4px;
+	padding: 4px 0 6px;
 	text-align: center;
 	text-transform: uppercase;
 	width: 100%;
