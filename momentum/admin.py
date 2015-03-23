@@ -9,4 +9,4 @@ class GoalAdmin(admin.ModelAdmin):
 
 @admin.register(Entry)
 class EntryAdmin(admin.ModelAdmin):
-    list_display = ('goal', 'amount', 'time', 'stop_time')
+    list_display = ('goal', 'amount', 'target_amount', 'time', 'stop_time')
