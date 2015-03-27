@@ -146,7 +146,7 @@ $(document).ready(function() {
 		var goalSlug = $(this).parents(".goal").attr("data-slug");
 
 		var parentWrapper = $(this).parents(".entry.action");
-		var amount = $(this).siblings("input[type=number]").val();
+		var amount = $(this).siblings("input.number-entry").val();
 
 		if (goalSlug != '' && amount > 0) {
 			// Send in the request
@@ -172,7 +172,7 @@ $(document).ready(function() {
 						}
 
 						// Clear out the input
-						parentWrapper.find("input[type=number]").val('');
+						parentWrapper.find("input.number-entry").val('');
 					} else {
 						parentWrapper.addClass("error");
 					}

@@ -239,7 +239,7 @@ header h1 a.logout {
 	border: solid 1px #f00;
 }
 
-#content .goal .entry.action input[type=number] {
+#content .goal .entry.action input.number-entry {
 	-moz-appearance: textfield;
 	background: #e6f9c7;
 	border: none;
@@ -254,18 +254,22 @@ header h1 a.logout {
 	text-transform: uppercase;
 }
 
-#content .goal .entry.action input[type=number]::-webkit-inner-spin-button {
+#content .goal .entry.action input.number-entry::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
 }
 
-#content .goal .entry.action input[type=number]::-webkit-outer-spin-button {
+#content .goal .entry.action input.number-entry::-webkit-outer-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
 }
 
-#content .goal .entry.action input[type=number]:focus {
+#content .goal .entry.action input.number-entry:focus {
 	outline: none;
+}
+
+#content .goal .entry.action input.number-entry:hover {
+	background: #d7f7a3;
 }
 
 #content .goal .entry.action .save {
@@ -280,10 +284,6 @@ header h1 a.logout {
 	text-align: center;
 	text-transform: uppercase;
 	width: 100%;
-}
-
-#content .goal .entry.action input[type=number]:hover {
-	background: #d7f7a3;
 }
 
 #content .goal .entry.action .save:hover {
