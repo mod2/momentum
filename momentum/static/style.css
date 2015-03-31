@@ -290,6 +290,23 @@ header h1 a.logout {
 	background: #444;
 }
 
+/* Optional */
+
+#content .goal-list.optional {
+	border-top: solid 3px #bbb;
+}
+
+#content .goal-list.optional .goal {
+	font-size: .85em;
+}
+
+@media screen and (min-width: 600px) {
+	#content .goal-list.optional {
+		margin-top: 1em;
+		padding-top: 1em;
+	}
+}
+
 /* Detail page */
 
 #content h3.entries {

@@ -188,11 +188,11 @@ $(document).ready(function() {
 
 
 	// Reordering goals
-	$("#goal-list").sortable({
+	$(".goal-list").sortable({
 		placeholder: "goal container placeholder",
 		update: function(event, ui) {
 			var order = {};
-			var items = ui.item.parents("#goal-list").find(".goal");
+			var items = ui.item.parents(".goal-list").find(".goal");
 
 			for (var i=0; i<items.length; i++) {
 				var item = $(items[i]);

@@ -15,12 +15,17 @@ from .models import Goal, Entry
 @login_required
 def dashboard(request):
     # Get all the user's goals
-    goals = Goal.objects.filter(Q(owner=request.user),
-                                      status='active').distinct().order_by('priority')
+    required_goals = Goal.objects.filter(Q(owner=request.user),
+                                         status='active',
+                                         required=True).distinct().order_by('priority')
+    optional_goals = Goal.objects.filter(Q(owner=request.user),
+                                            status='active',
+                                            required=False).distinct().order_by('priority')
 
     latest_entries = Entry.objects.filter(goal__owner=request.user).order_by('-time')[:5]
 
-    return render_to_response('dashboard.html', {'goals': goals,
+    return render_to_response('dashboard.html', {'required_goals': required_goals,
+                                                 'optional_goals': optional_goals,
                                                  'request': request,
                                                  'latest_entries': latest_entries,
                                                  'key': settings.WEB_KEY})

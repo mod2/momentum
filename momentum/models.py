@@ -21,6 +21,7 @@ class Goal(models.Model):
     status = models.CharField(max_length=255, choices=STATUS, default='active')
     priority = models.PositiveSmallIntegerField(null=False, default=30)
     owner = models.ForeignKey(auth.models.User, related_name='goals', null=False, default=1)
+    required = models.BooleanField(default=True)
 
     # Examples:
     # target_amount=15, type=minutes, period=day

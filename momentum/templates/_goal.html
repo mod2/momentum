@@ -1,0 +1,27 @@
+<div class="goal container{% if goal.in_progress %} running{% endif %}" data-slug="{{ goal.slug }}">
+	{% if goal.type == 'minutes' %}
+		{% if goal.in_progress %}
+		<span class="button action stop"><span class="label">Stop</span>
+		{% else %}
+		<span class="button action start"><span class="label">Start</span>
+		{% endif %}
+			<span class="timer{% if goal.get_current_elapsed_time == 0 %} hidden{% endif %}">
+				<span class="elapsed"><span class="num">{{ goal.get_current_elapsed_time_converted|floatformat:1 }}</span> {{ goal.type_truncated }}</span>
+				<span class="seconds-wrapper"><span class="seconds">{{ goal.get_current_elapsed_time|floatformat:0 }}</span> sec</span>
+			</span>
+		</span>
+	{% elif goal.type == 'words' %}
+		<span class="entry action">
+			<input class="number-entry" type="text" pattern="\d*" />
+			<span class="save">Save</span>
+		</span>
+	{% endif %}
+
+	<h2><a href="{% url "goal" goal.slug %}">{{ goal.name }}</a></h2>
+
+	<div class="info"><span class="current">{% if goal.get_current_amount_converted == 0 %}0{% else %}{% if goal.type == 'minutes' or goal.type == 'hours' %}{{ goal.get_current_amount_converted|floatformat:1 }}{% elif goal.type == 'words' %}{{ goal.get_current_amount }}{% endif %}{% endif %}</span> of <span class="target">{{ goal.target_amount }}</span> {{ goal.type }} per {{ goal.period }}</div>
+
+	<div class="percentage-wrapper">
+		<div class="percentage"><div class="bar {% if goal.get_current_amount_converted > goal.target_amount %}over{% endif %}" style="width: {{ goal.get_current_percentage|floatformat:1 }}%;"></div></div>
+	</div>
+</div>
