@@ -5,3 +5,5 @@ SECRET_KEY = ''
 TIME_ZONE = 'UTC'
 
 WEB_KEY = 'Your web key here.'
+
+STALE_PERIOD = 3

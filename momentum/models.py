@@ -34,6 +34,8 @@ class Goal(models.Model):
 
     # deadline
 
+    stale_period = models.PositiveSmallIntegerField(default=0)
+
     def __unicode__(self):
         return self.name
 
@@ -197,10 +199,44 @@ class Goal(models.Model):
 
         return day_list
 
+    def days_since_last_entry(self):
+        last_entry = self.entries.last()
+
+        if last_entry:
+            last_entry = last_entry.time.replace(tzinfo=utc).replace(hour=0, minute=0, second=0, microsecond=0)
+            today = datetime.utcnow().replace(tzinfo=utc).replace(hour=0, minute=0, second=0, microsecond=0)
+            days = (today - last_entry).days
+        else:
+            days = -1
+
+        return days
+
+    def get_stale_period(self):
+        from django.conf import settings
+
+        # If the reading has a stale period, use it instead of the system default
+        if self.stale_period > 0:
+            stale_period = self.stale_period
+        else:
+            stale_period = settings.STALE_PERIOD
+
+        return stale_period
+
+    def stale(self):
+        """ Check to see if this goal is stale. """
+
+        stale_period = self.get_stale_period()
+
+        if self.status == 'active' and stale_period != 0 and self.days_since_last_entry() > stale_period:
+            return True
+
+        return False
+
     def type_truncated(self):
         if self.type == 'minutes':
             return 'min'
         return self.type
+
 
 class Entry(models.Model):
     goal = models.ForeignKey(Goal, related_name='entries')

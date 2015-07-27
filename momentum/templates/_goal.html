@@ -1,4 +1,4 @@
-<div class="goal container{% if goal.in_progress %} running{% endif %}" data-slug="{{ goal.slug }}">
+<div class="goal container{% if goal.in_progress %} running{% endif %}{% if goal.stale %} stale{% endif %}" data-slug="{{ goal.slug }}">
 	{% if goal.type == 'minutes' %}
 		{% if goal.in_progress %}
 		<span class="button action stop"><span class="label">Stop</span>

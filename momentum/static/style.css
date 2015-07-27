@@ -173,6 +173,10 @@ header h1 a.logout {
 	color: #db268d;
 }
 
+#content .goal.stale h2 a {
+	color: #c02a2a;
+}
+
 #content .percentage {
 	background: #e0e0e0;
 	margin-top: 3px;
