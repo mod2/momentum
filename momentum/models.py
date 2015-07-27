@@ -23,6 +23,8 @@ class Goal(models.Model):
     owner = models.ForeignKey(auth.models.User, related_name='goals', null=False, default=1)
     required = models.BooleanField(default=True)
 
+    folder = models.ForeignKey('Folder', null=True, blank=True, related_name='goals')
+
     # Examples:
     # target_amount=15, type=minutes, period=day
     # target_amount=1, type=times, period=day
@@ -278,3 +280,19 @@ class Entry(models.Model):
 
     class Meta:
         verbose_name_plural = "entries"
+
+
+class Folder(models.Model):
+    name = models.CharField(max_length=100)
+    slug = AutoSlugField(populate_from='name')
+    order = models.PositiveSmallIntegerField(default=100)
+    owner = models.ForeignKey(auth.models.User, related_name='folders', default=1)
+
+    def __str__(self):
+        return self.name
+
+    def active_goals(self):
+        return self.goals.filter(status='active')
+
+    class Meta:
+        ordering = ['order']
