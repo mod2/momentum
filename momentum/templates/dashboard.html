@@ -2,21 +2,25 @@
 
 {% block content %}
 
-{% if required_goals %}
+{% if unfoldered_goals %}
 <section class="goal-list">
-{% for goal in required_goals %}
+{% for goal in unfoldered_goals %}
 	{% include '_goal.html' %}
 {% endfor %}
 </section>
 {% endif %}
 
-{% if optional_goals %}
-<section class="goal-list optional">
-{% for goal in optional_goals %}
+{% for folder in folders %}
+{% if folder.active_goals|length > 0 %}
+<h2 class="folder-name container">{{ folder.name }}</h2>
+
+<section class="goal-list">
+{% for goal in folder.active_goals %}
 	{% include '_goal.html' %}
 {% endfor %}
 </section>
 {% endif %}
+{% endfor %}
 
 {% endblock content %}
 

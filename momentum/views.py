@@ -10,22 +10,20 @@ from datetime import datetime
 from django.conf import settings
 import json
 
-from .models import Goal, Entry
+from .models import Goal, Entry, Folder
 
 @login_required
 def dashboard(request):
     # Get all the user's goals
-    required_goals = Goal.objects.filter(Q(owner=request.user),
-                                         status='active',
-                                         required=True).distinct().order_by('priority')
-    optional_goals = Goal.objects.filter(Q(owner=request.user),
-                                            status='active',
-                                            required=False).distinct().order_by('priority')
+    unfoldered_goals = Goal.objects.filter(Q(owner=request.user),
+                                           status='active',
+                                           folder__isnull=True).distinct().order_by('priority')
+    active_folders = Folder.objects.filter(Q(owner=request.user)).distinct().order_by('order')
 
     latest_entries = Entry.objects.filter(goal__owner=request.user).order_by('-time')[:5]
 
-    return render_to_response('dashboard.html', {'required_goals': required_goals,
-                                                 'optional_goals': optional_goals,
+    return render_to_response('dashboard.html', {'unfoldered_goals': unfoldered_goals,
+                                                 'folders': active_folders,
                                                  'request': request,
                                                  'latest_entries': latest_entries,
                                                  'key': settings.WEB_KEY})

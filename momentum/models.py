@@ -291,7 +291,7 @@ class Folder(models.Model):
         return self.name
 
     def active_goals(self):
-        return self.goals.filter(status='active')
+        return self.goals.filter(status='active').order_by('priority')
 
     class Meta:
         ordering = ['order']
