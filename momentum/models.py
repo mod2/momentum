@@ -21,7 +21,6 @@ class Goal(models.Model):
     status = models.CharField(max_length=255, choices=STATUS, default='active')
     priority = models.PositiveSmallIntegerField(null=False, default=30)
     owner = models.ForeignKey(auth.models.User, related_name='goals', null=False, default=1)
-    required = models.BooleanField(default=True)
 
     folder = models.ForeignKey('Folder', null=True, blank=True, related_name='goals')
 
