@@ -208,7 +208,8 @@ class Goal(models.Model):
             today = datetime.utcnow().replace(tzinfo=utc).replace(hour=0, minute=0, second=0, microsecond=0)
             days = (today - last_entry).days
         else:
-            days = -1
+            # Very far in the past, so it always shows up stale
+            days = 100000
 
         return days
 
