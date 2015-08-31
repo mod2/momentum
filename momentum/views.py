@@ -14,6 +14,8 @@ from .models import Goal, Entry, Folder
 
 @login_required
 def dashboard(request):
+    fullscreen = request.GET.get('fullscreen', False)
+
     # Get all the user's goals
     unfoldered_goals = Goal.objects.filter(Q(owner=request.user),
                                            status='active',
@@ -26,15 +28,19 @@ def dashboard(request):
                                                  'folders': active_folders,
                                                  'request': request,
                                                  'latest_entries': latest_entries,
+                                                 'fullscreen': fullscreen,
                                                  'key': settings.WEB_KEY})
 
 @login_required
 def goal(request, goal_slug):
+    fullscreen = request.GET.get('fullscreen', False)
+
     # Get the goal
     goal = Goal.objects.get(slug=goal_slug, owner=request.user)
 
     return render_to_response('goal.html', {'goal': goal,
                                             'request': request,
+                                            'fullscreen': fullscreen,
                                             'key': settings.WEB_KEY})
 
 

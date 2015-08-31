@@ -13,6 +13,10 @@
 	<link id="favicon-ico" rel="shortcut icon" href="{% static 'favicon.ico' %}?v=3" data-original-href="{% static 'favicon.ico' %}" data-timer-href="{% static 'favicon-timer.ico' %}">
 	<link id="favicon-png" rel="shortcut icon" href="{% static 'favicon.png' %}?v=3" data-original-href="{% static 'favicon.png' %}" data-timer-href="{% static 'favicon-timer.png' %}">
 	<link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}?v=3">
+	{% if fullscreen %}
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	{% endif %}
 
 	<script src="{% static 'jquery-2.1.1.min.js' %}" type="text/javascript" charset="utf-8"></script>
 	<script src="{% static 'jquery-ui.min.js' %}" type="text/javascript" charset="utf-8"></script>
