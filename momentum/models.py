@@ -41,7 +41,7 @@ class Goal(models.Model):
         return self.name
 
     def in_progress(self):
-        if self.type == 'words':
+        if self.type in ['words', 'times']:
             return False
 
         if len(self.entries.all()) > 0:
