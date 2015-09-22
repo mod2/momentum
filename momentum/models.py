@@ -54,7 +54,7 @@ class Goal(models.Model):
             return False
     
     def done_today(self):
-        return self.get_current_amount() >= self.target_amount
+        return self.get_current_amount_converted() >= self.target_amount
 
     def convert_to_resolution(self, duration):
         if self.type == "minutes":
