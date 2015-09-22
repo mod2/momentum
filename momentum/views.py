@@ -17,11 +17,15 @@ def dashboard(request):
     fullscreen = request.GET.get('fullscreen', False)
 
     # Get all the user's goals
-    unfoldered_goals = Goal.objects.filter(Q(owner=request.user),
-                                           status='active',
-                                           folder__isnull=True).distinct().order_by('priority')
+    unfoldered_goals = [x for x in Goal.objects.filter(Q(owner=request.user),
+                                                    status='active',
+                                                    folder__isnull=True)
+                                                .distinct()
+                                                .order_by('priority') if not x.done_today()]
+
     active_folders = Folder.objects.filter(Q(owner=request.user)).distinct().order_by('order')
 
+    # Get the latest entries
     latest_entries = Entry.objects.filter(goal__owner=request.user).order_by('-time')[:5]
 
     return render_to_response('dashboard.html', {'unfoldered_goals': unfoldered_goals,
@@ -42,7 +46,6 @@ def goal(request, goal_slug):
                                             'request': request,
                                             'fullscreen': fullscreen,
                                             'key': settings.WEB_KEY})
-
 
 def timer(request, goal_slug):
     # Get the goal
