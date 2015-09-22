@@ -23,7 +23,7 @@ $(document).ready(function() {
 
 				for (i in data) {
 					var goal = data[i];
-					var goalElement = $(".goal[data-slug=" + goal.slug + "]");
+					var goalElement = $(".goal[data-id=" + goal.id + "]");
 
 					if (goalElement.find(".button.stop").length > 0) {
 						goalElement.find(".timer .num").html(goal.current_elapsed);
@@ -112,15 +112,15 @@ $(document).ready(function() {
 
 	// Start/stop buttons
 	$(".button.action").on("click touchstart", function() {
-		// Get the slug of the goal we want
-		var goalSlug = $(this).parents(".goal").attr("data-slug");
+		// Get the id of the goal we want
+		var goalId = $(this).parents(".goal").attr("data-id");
 		var button = $(this);
 
-		if (goalSlug != '') {
+		if (goalId != '') {
 			// Send in the timer request
 			// It's GET so we can use it in Launch Center Pro, Drafts, etc.
 			$.ajax({
-				url: '/' + goalSlug + '/timer/',
+				url: '/' + goalId + '/timer/',
 				method: 'GET',
 				data: {
 					'key': webKey,
@@ -140,18 +140,18 @@ $(document).ready(function() {
 	});
 
 
-	// Wordcount entry
+	// Wordcount/times entry
 	$(".entry.action .save").on("click touchstart", function() {
-		// Get the slug of the goal we want
-		var goalSlug = $(this).parents(".goal").attr("data-slug");
+		// Get the ID of the goal we want
+		var goalId = $(this).parents(".goal").attr("data-id");
 
 		var parentWrapper = $(this).parents(".entry.action");
 		var amount = $(this).siblings("input.number-entry").val();
 
-		if (goalSlug != '' && amount > 0) {
+		if (goalId != '' && amount > 0) {
 			// Send in the request
 			$.ajax({
-				url: '/' + goalSlug + '/save/',
+				url: '/' + goalId + '/save/',
 				method: 'GET',
 				data: {
 					'key': webKey,
@@ -196,7 +196,7 @@ $(document).ready(function() {
 
 			for (var i=0; i<items.length; i++) {
 				var item = $(items[i]);
-				order[item.attr("data-slug")] = i + 1;
+				order[item.attr("data-id")] = i + 1;
 			}
 
 			var url = '/update-goals/';

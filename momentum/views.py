@@ -36,20 +36,20 @@ def dashboard(request):
                                                  'key': settings.WEB_KEY})
 
 @login_required
-def goal(request, goal_slug):
+def goal(request, goal_id):
     fullscreen = request.GET.get('fullscreen', False)
 
     # Get the goal
-    goal = Goal.objects.get(slug=goal_slug, owner=request.user)
+    goal = Goal.objects.get(id=goal_id, owner=request.user)
 
     return render_to_response('goal.html', {'goal': goal,
                                             'request': request,
                                             'fullscreen': fullscreen,
                                             'key': settings.WEB_KEY})
 
-def timer(request, goal_slug):
+def timer(request, goal_id):
     # Get the goal
-    goal = Goal.objects.get(slug=goal_slug)
+    goal = Goal.objects.get(id=goal_id)
 
     # Get the web key and redirect flag
     web_key = request.GET.get('key', '')
@@ -90,9 +90,9 @@ def timer(request, goal_slug):
     else:
         return JsonResponse(json.dumps({'status': 'error'}), safe=False)
 
-def save(request, goal_slug):
+def save(request, goal_id):
     # Get the goal
-    goal = Goal.objects.get(slug=goal_slug)
+    goal = Goal.objects.get(id=goal_id)
 
     # Get the web key and redirect flag
     web_key = request.GET.get('key', '')
@@ -131,6 +131,7 @@ def status(request):
     if web_key != '' and web_key == settings.WEB_KEY:
         for goal in goals:
             goal_list.append({
+                'id': goal.id,
                 'slug': goal.slug,
                 'current_amount': '{0:.1f}'.format(goal.get_current_amount_converted()),
                 'current_elapsed': '{0:.1f}'.format(goal.get_current_elapsed_time_converted()),
@@ -146,9 +147,9 @@ def update_goals(request):
     if request.is_ajax() and request.method == 'POST':
         order = json.loads(request.body)['order']
 
-        goals = Goal.objects.filter(slug__in=order.keys())
+        goals = Goal.objects.filter(id__in=order.keys())
         for goal in goals:
-            goal.priority = order[unicode(goal.slug)]
+            goal.priority = order[goal.id]
             goal.save()
 
         return JsonResponse(json.dumps({ "status": "success" }), safe=False)
