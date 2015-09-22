@@ -54,7 +54,7 @@ class Goal(models.Model):
             return False
     
     def done_today(self):
-        return self.get_current_amount_converted() >= self.target_amount
+        return (self.get_current_amount_converted() >= self.target_amount)
 
     def convert_to_resolution(self, duration):
         if self.type == "minutes":
@@ -295,7 +295,9 @@ class Folder(models.Model):
         return self.name
 
     def active_goals(self):
-        return self.goals.filter(status='active').order_by('priority')
+        return [x for x in self.goals.filter(status='active')
+                                    .distinct()
+                                    .order_by('priority') if not x.done_today()]
 
     class Meta:
         ordering = ['order']
