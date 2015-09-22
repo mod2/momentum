@@ -36,6 +36,26 @@ def dashboard(request):
                                                  'key': settings.WEB_KEY})
 
 @login_required
+def organize(request):
+    # Get all the user's goals
+    unfoldered_goals = [x for x in Goal.objects.filter(Q(owner=request.user),
+                                                    status='active',
+                                                    folder__isnull=True)
+                                                .distinct()
+                                                .order_by('priority') if not x.done_today()]
+
+    active_folders = Folder.objects.filter(Q(owner=request.user)).distinct().order_by('order')
+
+    # Get the latest entries
+    latest_entries = Entry.objects.filter(goal__owner=request.user).order_by('-time')[:5]
+
+    return render_to_response('organize.html', {'unfoldered_goals': unfoldered_goals,
+                                                'folders': active_folders,
+                                                'request': request,
+                                                'latest_entries': latest_entries,
+                                                'key': settings.WEB_KEY})
+
+@login_required
 def goal(request, goal_id):
     fullscreen = request.GET.get('fullscreen', False)
 

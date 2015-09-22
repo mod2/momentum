@@ -28,7 +28,7 @@
 <body>
 	<header>
 		<h1>
-			{% if request.user %}<a class="logout" href="{% url "logout" %}">logout</a>{% endif %}
+			{% if request.user %}<div class="controls"><a href="{% url "organize" %}">organize</a> &mdash; <a href="{% url "logout" %}">logout</a></div>{% endif %}
 			<a href="{% url "dashboard" %}">momentum</a>
 		</h1>
 	</header>

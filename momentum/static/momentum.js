@@ -188,11 +188,13 @@ $(document).ready(function() {
 
 
 	// Add event handler for reordering goals
-	for (var i=0; i<$(".goal-list").length; i++) {
-		var goalList = $(".goal-list")[i];
+	var goals = $(".goal-list.sortable");
+	for (var i=0; i<goals.length; i++) {
+		var goalList = goals[i];
 
 		var sortable = new Sortable(goalList, {
 			draggable: ".goal",
+			handle: ".handle",
 			ghostClass: "placeholder",
 			onUpdate: function(e) {
 				var item = $(e.item);

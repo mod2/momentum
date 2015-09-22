@@ -1,0 +1,31 @@
+{% extends '_base.html' %}
+
+{% block content %}
+
+{% if unfoldered_goals %}
+<section class="goal-list sortable">
+{% for goal in unfoldered_goals %}
+	{% include '_goal_organize.html' %}
+{% endfor %}
+</section>
+{% endif %}
+
+{% for folder in folders %}
+{% if folder.active_goals|length > 0 %}
+<h2 class="folder-name container">{{ folder.name }}</h2>
+
+<section class="goal-list sortable">
+{% for goal in folder.active_goals %}
+	{% include '_goal_organize.html' %}
+{% endfor %}
+</section>
+{% endif %}
+{% endfor %}
+
+{% endblock content %}
+
+{% block footer %}
+<div class="container">
+	<a target="_new" href="{% url 'admin:index' %}">Admin</a>
+</div>
+{% endblock footer %}

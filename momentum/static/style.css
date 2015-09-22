@@ -43,9 +43,14 @@ header h1 a:hover {
 	color: #fff;
 }
 
-header h1 a.logout {
+header h1 .controls {
+	color: #9273a0;
 	float: right;
 	font-size: .9em;
+}
+
+header h1 .controls a {
+	display: inline;
 }
 
 #content {
@@ -306,21 +311,19 @@ header h1 a.logout {
 	background: #444;
 }
 
-/* Optional */
+/* Organize page */
 
-#content .goal-list.optional {
-	border-top: solid 3px #bbb;
+#content .sortable .goal {
+	padding-bottom: 11px;
+	padding-top: 11px;
 }
 
-#content .goal-list.optional .goal {
-	font-size: .85em;
-}
-
-@media screen and (min-width: 600px) {
-	#content .goal-list.optional {
-		margin-top: 1em;
-		padding-top: 1em;
-	}
+#content .sortable .goal h2 .handle {
+	color: #888;
+	cursor: move;
+	float: right;
+	font-size: .9em;
+	margin-left: 10px;
 }
 
 /* Detail page */

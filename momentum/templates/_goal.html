@@ -17,7 +17,7 @@
 		</span>
 	{% endif %}
 
-	<h2><a href="{% url "goal" goal.id %}">{{ goal.name }}</a></h2>
+	<h2 class="goal-name"><a href="{% url "goal" goal.id %}">{{ goal.name }}</a></h2>
 
 	<div class="info"><span class="current">{% if goal.get_current_amount_converted == 0 %}0{% else %}{% if goal.type == 'minutes' or goal.type == 'hours' %}{{ goal.get_current_amount_converted|floatformat:1 }}{% elif goal.type == 'words' or goal.type == 'times' %}{{ goal.get_current_amount }}{% endif %}{% endif %}</span> of <span class="target">{{ goal.target_amount }}</span> {{ goal.type }} per {{ goal.period }}</div>
 
