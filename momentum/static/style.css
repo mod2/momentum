@@ -90,15 +90,14 @@ header h1 a.logout {
 
 #content .goal {
 	background: #fff;
+	cursor: pointer;
 	overflow: hidden;
 	padding-bottom: 16px;
 	padding-top: 16px;
 }
 
-#content .goal.placeholder {
-	background: #eee;
-	height: 4em;
-	margin: 10px auto;
+#content .placeholder {
+	background: #f2ffd0 !important;
 }
 
 #content .goal.ui-sortable-helper {

@@ -187,33 +187,38 @@ $(document).ready(function() {
 	});
 
 
-	// Reordering goals
-	$(".goal-list").sortable({
-		placeholder: "goal container placeholder",
-		update: function(event, ui) {
-			var order = {};
-			var items = ui.item.parents(".goal-list").find(".goal");
+	// Add event handler for reordering goals
+	for (var i=0; i<$(".goal-list").length; i++) {
+		var goalList = $(".goal-list")[i];
 
-			for (var i=0; i<items.length; i++) {
-				var item = $(items[i]);
-				order[item.attr("data-id")] = i + 1;
-			}
+		var sortable = new Sortable(goalList, {
+			draggable: ".goal",
+			ghostClass: "placeholder",
+			onUpdate: function(e) {
+				var item = $(e.item);
+				var order = [];
+				var items = item.parents(".goal-list").find(".goal");
 
-			var url = '/update-goals/';
+				for (var i=0; i<items.length; i++) {
+					var item = $(items[i]);
+					order.push(parseInt(item.attr("data-id")));
+				}
 
-			$.ajax({
-				url: url,
-				method: 'POST',
-				contentType: 'application/json',
-				data: JSON.stringify({ "order": order }),
-				success: function(data) {
-				},
-				error: function(data) {
-					console.log("Error! :(", data);
-				},
-			});
-		},
-	});
+				var url = '/update-goals/';
+
+				$.ajax({
+					url: url,
+					method: 'POST',
+					contentType: 'application/json',
+					data: JSON.stringify({ "order": order }),
+					success: function(data) { },
+					error: function(data) {
+						console.log("Error! :(", data);
+					},
+				});
+			},
+		});
+	}
 });
 
 // From https://gist.github.com/alanhamlett/6316427

@@ -147,9 +147,9 @@ def update_goals(request):
     if request.is_ajax() and request.method == 'POST':
         order = json.loads(request.body)['order']
 
-        goals = Goal.objects.filter(id__in=order.keys())
-        for goal in goals:
-            goal.priority = order[goal.id]
+        for i, goal_id in enumerate(order):
+            goal = Goal.objects.get(id=goal_id)
+            goal.priority = i
             goal.save()
 
         return JsonResponse(json.dumps({ "status": "success" }), safe=False)
