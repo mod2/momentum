@@ -319,11 +319,16 @@ header h1 .controls a {
 }
 
 #content .sortable .goal h2 .handle {
-	color: #888;
+	background: #a5d09c;
+	border-radius: 3px;
+	color: #80a978;
 	cursor: move;
 	float: right;
 	font-size: .9em;
+	height: 1em;
 	margin-left: 10px;
+	text-align: center;
+	width: 2.5em;
 }
 
 /* Detail page */
