@@ -107,6 +107,11 @@ $(document).ready(function() {
 				// Change the favicon back
 				updateFavicon("original");
 			}
+
+			// If it was complete, hide it
+			if (button.parents(".goal").find(".percentage .bar").hasClass("over")) {
+				button.parents(".goal").slideUp(150);
+			}
 		}
 	}
 
