@@ -31,7 +31,7 @@ $(document).ready(function() {
 						goalElement.find(".info .current").html(goal.current_amount);
 						goalElement.find(".percentage .bar").css("width", goal.current_percentage + "%");
 
-						if (goal.current_amount > parseFloat(goalElement.find(".info .target").html())) {
+						if (goal.current_amount >= parseFloat(goalElement.find(".info .target").html())) {
 							goalElement.find(".percentage .bar").addClass("over");
 						}
 					}
@@ -81,8 +81,8 @@ $(document).ready(function() {
 			// Show the timer
 			button.find(".timer").removeClass("hidden");
 
-			// Set it running
-			button.parents(".goal").addClass("running");
+			// Set it running and remove the stale class if it's there
+			button.parents(".goal").addClass("running").removeClass("stale");
 
 			// Update the favicon
 			updateFavicon("timer");
@@ -167,7 +167,7 @@ $(document).ready(function() {
 						goalElement.find(".info .current").html(data.total_amount);
 						goalElement.find(".percentage .bar").css("width", data.percentage + "%");
 
-						if (data.total_amount > parseInt(goalElement.find(".info .target").html())) {
+						if (parseFloat(data.total_amount) >= parseFloat(goalElement.find(".info .target").html())) {
 							goalElement.find(".percentage .bar").addClass("over");
 						}
 

@@ -153,10 +153,10 @@ def status(request):
             goal_list.append({
                 'id': goal.id,
                 'slug': goal.slug,
-                'current_amount': '{0:.1f}'.format(goal.get_current_amount_converted()),
-                'current_elapsed': '{0:.1f}'.format(goal.get_current_elapsed_time_converted()),
+                'current_amount': '{0:.2f}'.format(goal.get_current_amount_converted()),
+                'current_elapsed': '{0:.2f}'.format(goal.get_current_elapsed_time_converted()),
                 'current_elapsed_in_seconds': '{0:.0f}'.format(goal.get_current_elapsed_time()),
-                'current_percentage': '{0:.1f}'.format(goal.get_current_percentage()),
+                'current_percentage': '{0:.2f}'.format(goal.get_current_percentage()),
             })
 
         return JsonResponse(json.dumps(goal_list), safe=False)
