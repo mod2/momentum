@@ -11,11 +11,11 @@
 {% endif %}
 
 {% for folder in folders %}
-{% if folder.active_goals|length > 0 %}
+{% if folder.active_goals_today|length > 0 %}
 <h2 class="folder-name container">{{ folder.name }}</h2>
 
 <section class="goal-list">
-{% for goal in folder.active_goals %}
+{% for goal in folder.active_goals_today %}
 	{% include '_goal.html' %}
 {% endfor %}
 </section>

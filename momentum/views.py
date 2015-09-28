@@ -42,7 +42,7 @@ def organize(request):
                                                     status='active',
                                                     folder__isnull=True)
                                                 .distinct()
-                                                .order_by('priority') if not x.done_today()]
+                                                .order_by('priority')]
 
     active_folders = Folder.objects.filter(Q(owner=request.user)).distinct().order_by('order')
 

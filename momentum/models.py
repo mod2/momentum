@@ -297,6 +297,11 @@ class Folder(models.Model):
     def active_goals(self):
         return [x for x in self.goals.filter(status='active')
                                     .distinct()
+                                    .order_by('priority')]
+
+    def active_goals_today(self):
+        return [x for x in self.goals.filter(status='active')
+                                    .distinct()
                                     .order_by('priority') if not x.done_today()]
 
     class Meta:
