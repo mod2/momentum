@@ -118,6 +118,12 @@ class Goal(models.Model):
     def get_current_amount_converted(self):
         return self.convert_to_resolution(self.get_current_amount())
 
+    def get_current_amount_mm_ss(self):
+        return self.seconds_to_mm_ss(self.get_current_amount())
+
+    def get_current_elapsed_time_mm_ss(self):
+        return self.seconds_to_mm_ss(self.get_current_elapsed_time())
+
     def get_current_percentage(self):
         return min((self.get_current_amount_converted() / self.target_amount) * 100.0, 100.0)
 
@@ -150,6 +156,10 @@ class Goal(models.Model):
 
     def get_amount_for_day_converted(self, day):
         return self.convert_to_resolution(self.get_amount_for_day(day))
+
+    def seconds_to_mm_ss(self, seconds):
+        m, s = divmod(seconds, 60)
+        return '{:d}:{:02d}'.format(int(m), int(s))
 
     def get_percentage_for_day(self, day, target_amount=None):
         if not target_amount:
@@ -193,11 +203,22 @@ class Goal(models.Model):
             else:
                 target_amount = self.target_amount
 
+            amount = self.get_amount_for_day_converted(day)
+
+            if self.type in ['minutes', 'hours']:
+                display_amount = self.seconds_to_mm_ss(self.get_amount_for_day(day))
+            else:
+                display_amount = amount
+
+            over = (amount >= target_amount)
+
             day_list.append({
                 'date': day,
                 'entries': entries,
+                'over': over,
                 'target_amount': target_amount,
-                'amount': self.get_amount_for_day_converted(day),
+                'amount': amount,
+                'display_amount': display_amount,
                 'percentage': self.get_percentage_for_day(day, target_amount),
             })
 

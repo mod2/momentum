@@ -150,11 +150,18 @@ def status(request):
 
     if web_key != '' and web_key == settings.WEB_KEY:
         for goal in goals:
+            current_amount = goal.get_current_amount()
+            current_elapsed = goal.get_current_elapsed_time()
+
+            # Whether we're over the target amount
+            over = (goal.get_current_amount_converted() >= goal.target_amount)
+
             goal_list.append({
                 'id': goal.id,
                 'slug': goal.slug,
-                'current_amount': '{0:.2f}'.format(goal.get_current_amount_converted()),
-                'current_elapsed': '{0:.2f}'.format(goal.get_current_elapsed_time_converted()),
+                'over': over,
+                'current_amount': goal.seconds_to_mm_ss(current_amount),
+                'current_elapsed': goal.seconds_to_mm_ss(current_elapsed),
                 'current_elapsed_in_seconds': '{0:.0f}'.format(goal.get_current_elapsed_time()),
                 'current_percentage': '{0:.2f}'.format(goal.get_current_percentage()),
             })

@@ -31,7 +31,7 @@ $(document).ready(function() {
 						goalElement.find(".info .current").html(goal.current_amount);
 						goalElement.find(".percentage .bar").css("width", goal.current_percentage + "%");
 
-						if (goal.current_amount >= parseFloat(goalElement.find(".info .target").html())) {
+						if (goal.over) {
 							goalElement.find(".percentage .bar").addClass("over");
 						}
 					}
