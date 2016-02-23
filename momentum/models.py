@@ -44,8 +44,8 @@ class Goal(models.Model):
         if self.type in ['words', 'times']:
             return False
 
-        if len(self.entries.all()) > 0:
-            last_entry = list(self.entries.all())[-1]
+        if self.entries.count() > 0:
+            last_entry = self.entries.last()
             if not last_entry.stop_time:
                 return True
             else:
@@ -54,7 +54,10 @@ class Goal(models.Model):
             return False
     
     def done_today(self):
-        return (self.get_current_amount_converted() >= self.target_amount)
+        if self.get_current_amount_converted() >= self.target_amount and not self.in_progress():
+            return True
+        
+        return False
 
     def convert_to_resolution(self, duration):
         if self.type == "minutes":
@@ -67,9 +70,9 @@ class Goal(models.Model):
     def get_current_elapsed_time(self):
         """ Returns current elapsed time in seconds. """
 
-        if len(self.entries.all()) > 0:
+        if self.entries.count() > 0:
             now = timezone.now()
-            last_entry = list(self.entries.all())[-1]
+            last_entry = self.entries.last()
 
             # If we're stopped, there's no current elapsed time
             if last_entry.stop_time:
@@ -176,7 +179,7 @@ class Goal(models.Model):
 
         entries = self.entries.all().order_by('time')
 
-        if len(entries) > 0:
+        if entries.count() > 0:
             start_date = timezone.localtime(entries[0].time, timezone.get_current_timezone()).date()
             end_date = timezone.now().date()
 

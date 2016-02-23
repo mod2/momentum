@@ -79,7 +79,7 @@ def timer(request, goal_id):
         current_amount = goal.get_current_amount_converted()
 
         # Get the latest entry
-        if len(goal.entries.all()) > 0:
+        if goal.entries.count() > 0:
             latest_entry = list(goal.entries.all())[-1]
 
             # If there's a stop time, create a new entry
