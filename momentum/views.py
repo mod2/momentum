@@ -172,7 +172,7 @@ def status(request):
 
 def update_goals(request):
     if request.is_ajax() and request.method == 'POST':
-        order = json.loads(request.body)['order']
+        order = json.loads(request.body.decode('utf-8'))['order']
 
         for i, goal_id in enumerate(order):
             goal = Goal.objects.get(id=goal_id)
