@@ -263,18 +263,8 @@ class Goal(models.Model):
 
     def width(self):
         if self.type == 'minutes':
-            if self.target_amount == 1:
-                return 20
-            elif self.target_amount == 2:
-                return 30
-            elif self.target_amount == 3:
-                return 50
-            elif self.target_amount == 4:
-                return 75
-            elif self.target_amount >= 5 and self.target_amount < 10:
-                return 100
-            elif self.target_amount >= 10:
-                return 160
+            # Scale to the number of minutes, 10+ is full width
+            return min(self.target_amount * 16, 160)
 
         return 160
 
