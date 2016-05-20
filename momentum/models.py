@@ -319,14 +319,25 @@ class Folder(models.Model):
         return self.name
 
     def active_goals(self):
-        return [x for x in self.goals.filter(status='active')
-                                    .distinct()
-                                    .order_by('priority')]
+        goals = self.goals.filter(status='active').distinct().order_by('priority')
+
+        # Now sort stale first
+        goals = sorted(goals, key=lambda k: 1 - k.stale())
+
+        return goals
 
     def active_goals_today(self):
+
+        goals = [x for x in self.goals.filter(status='active').distinct().order_by('priority') if not x.done_today()]
+
+        # Now sort stale first
+        goals = sorted(goals, key=lambda k: 1 - k.stale())
+
+        return goals
         return [x for x in self.goals.filter(status='active')
                                     .distinct()
                                     .order_by('priority') if not x.done_today()]
+
 
     class Meta:
         ordering = ['order']

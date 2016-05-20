@@ -23,6 +23,9 @@ def dashboard(request):
                                                 .distinct()
                                                 .order_by('priority') if not x.done_today()]
 
+    # Now sort stale first
+    unfoldered_goals = sorted(unfoldered_goals, key=lambda k: 1 - k.stale())
+
     active_folders = Folder.objects.filter(Q(owner=request.user)).distinct().order_by('order')
 
     # Get the latest entries
