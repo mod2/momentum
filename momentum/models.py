@@ -261,6 +261,23 @@ class Goal(models.Model):
 
         return False
 
+    def width(self):
+        if self.type == 'minutes':
+            if self.target_amount == 1:
+                return 20
+            elif self.target_amount == 2:
+                return 30
+            elif self.target_amount == 3:
+                return 50
+            elif self.target_amount == 4:
+                return 75
+            elif self.target_amount >= 5 and self.target_amount < 10:
+                return 100
+            elif self.target_amount >= 10:
+                return 160
+
+        return 160
+
     def type_truncated(self):
         if self.type == 'minutes':
             return 'min'
