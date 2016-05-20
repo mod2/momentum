@@ -18,7 +18,7 @@
 
 	<h2 class="goal-name"><a href="{% url "goal" goal.id %}">{{ goal.name }}</a></h2>
 
-	<div class="info"><span class="current">{% if goal.get_current_amount_converted == 0 %}0{% else %}{% if goal.type == 'minutes' or goal.type == 'hours' %}{{ goal.get_current_amount_mm_ss }}{% elif goal.type == 'words' or goal.type == 'times' %}{{ goal.get_current_amount }}{% endif %}{% endif %}</span> of <span class="target">{{ goal.target_amount }}</span> {{ goal.type }} per {{ goal.period }}</div>
+	<div class="info"><span class="current">{% if goal.get_current_amount_converted == 0 %}0{% else %}{% if goal.type == 'minutes' or goal.type == 'hours' %}{{ goal.get_current_amount_mm_ss }}{% elif goal.type == 'words' or goal.type == 'times' %}{{ goal.get_current_amount }}{% endif %}{% endif %}</span> of <span class="target">{{ goal.target_amount }}</span> {{ goal.get_display_type }} per {{ goal.period }}</div>
 
 	<div class="percentage-wrapper">
 		<div class="percentage" style="width: {{ goal.width }}px;"><div class="bar {% if goal.get_current_amount_converted > goal.target_amount %}over{% endif %}" style="width: {{ goal.get_current_percentage|floatformat:2 }}%;"></div></div>

@@ -251,6 +251,15 @@ class Goal(models.Model):
 
         return stale_period
 
+    def get_display_type(self):
+        if self.type == 'minutes' and self.target_amount == 1:
+            return 'minute'
+
+        if self.type == 'words' and self.target_amount == 1:
+            return 'word'
+
+        return self.type
+
     def stale(self):
         """ Check to see if this goal is stale. """
 
