@@ -146,28 +146,29 @@ def save(request, goal_id):
 def status(request):
     # Get all goals and return the current/elapsed times for each
     goal_list = []
-    goals = Goal.objects.all()
+    goals = Goal.objects.filter(status='active')
 
     # Get the web key and redirect flag
     web_key = request.GET.get('key', '')
 
     if web_key != '' and web_key == settings.WEB_KEY:
         for goal in goals:
-            current_amount = goal.get_current_amount()
-            current_elapsed = goal.get_current_elapsed_time()
+            if goal.type in ['minutes', 'hours']:
+                current_amount = goal.get_current_amount()
+                current_elapsed = goal.get_current_elapsed_time()
 
-            # Whether we're over the target amount
-            over = (goal.get_current_amount_converted() >= goal.target_amount)
+                # Whether we're over the target amount
+                over = (goal.get_current_amount_converted() >= goal.target_amount)
 
-            goal_list.append({
-                'id': goal.id,
-                'slug': goal.slug,
-                'over': over,
-                'current_amount': goal.seconds_to_mm_ss(current_amount),
-                'current_elapsed': goal.seconds_to_mm_ss(current_elapsed),
-                'current_elapsed_in_seconds': '{0:.0f}'.format(goal.get_current_elapsed_time()),
-                'current_percentage': '{0:.2f}'.format(goal.get_current_percentage()),
-            })
+                goal_list.append({
+                    'id': goal.id,
+                    'slug': goal.slug,
+                    'over': over,
+                    'current_amount': goal.seconds_to_mm_ss(current_amount),
+                    'current_elapsed': goal.seconds_to_mm_ss(current_elapsed),
+                    'current_elapsed_in_seconds': '{0:.0f}'.format(current_elapsed),
+                    'current_percentage': '{0:.2f}'.format(goal.get_current_percentage()),
+                })
 
         return JsonResponse(json.dumps(goal_list), safe=False)
     else:
