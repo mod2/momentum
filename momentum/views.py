@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.utils.timezone import utc
+from django.views.decorators.cache import never_cache
 from datetime import datetime
 from django.conf import settings
 import json
@@ -70,6 +71,10 @@ def goal(request, goal_id):
                                             'fullscreen': fullscreen,
                                             'key': settings.WEB_KEY})
 
+
+# API calls
+
+@never_cache
 def timer(request, goal_id):
     # Get the goal
     goal = Goal.objects.get(id=goal_id)
@@ -113,6 +118,7 @@ def timer(request, goal_id):
     else:
         return JsonResponse(json.dumps({'status': 'error'}), safe=False)
 
+@never_cache
 def save(request, goal_id):
     # Get the goal
     goal = Goal.objects.get(id=goal_id)
@@ -143,6 +149,7 @@ def save(request, goal_id):
     else:
         return JsonResponse(json.dumps({'status': 'error'}), safe=False)
 
+@never_cache
 def status(request):
     # Get all goals and return the current/elapsed times for each
 
@@ -171,6 +178,7 @@ def status(request):
     else:
         return JsonResponse({'status': 'error'})
 
+@never_cache
 def update_goals(request):
     if request.is_ajax() and request.method == 'POST':
         order = json.loads(request.body.decode('utf-8'))['order']
