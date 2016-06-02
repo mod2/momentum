@@ -29,7 +29,7 @@ def dashboard(request):
     active_folders = Folder.objects.filter(Q(owner=request.user)).distinct().order_by('order')
 
     # Get the latest entries
-    latest_entries = Entry.objects.filter(goal__owner=request.user).order_by('-time')[:5]
+    latest_entries = Entry.objects.filter(goal__owner=request.user).select_related('goal').order_by('-time')[:5]
 
     return render_to_response('dashboard.html', {'unfoldered_goals': unfoldered_goals,
                                                  'folders': active_folders,
