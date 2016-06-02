@@ -19,10 +19,8 @@ $(document).ready(function() {
 			},
 			contentType: 'application/json',
 			success: function(data) {
-				data = JSON.parse(data);
-
-				for (i in data) {
-					var goal = data[i];
+				for (i in data.goals) {
+					var goal = data.goals[i];
 					var goalElement = $(".goal[data-id=" + goal.id + "]");
 
 					if (goalElement.find(".button.stop").length > 0) {

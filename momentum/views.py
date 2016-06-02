@@ -160,7 +160,6 @@ def status(request):
 
                 goal_list.append({
                     'id': goal.id,
-                    'slug': goal.slug,
                     'over': metadata['over'],
                     'current_amount': metadata['current_amount_mm_ss'],
                     'current_elapsed': metadata['current_elapsed_mm_ss'],
@@ -168,9 +167,9 @@ def status(request):
                     'current_percentage': '{0:.2f}'.format(metadata['current_percentage']),
                 })
 
-        return JsonResponse(json.dumps(goal_list), safe=False)
+        return JsonResponse({'goals': goal_list})
     else:
-        return JsonResponse(json.dumps({'status': 'error'}), safe=False)
+        return JsonResponse({'status': 'error'})
 
 def update_goals(request):
     if request.is_ajax() and request.method == 'POST':
