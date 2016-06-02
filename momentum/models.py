@@ -118,8 +118,11 @@ class Goal(models.Model):
 
         return 0
 
-    def get_current_amount_converted(self):
-        return self.convert_to_resolution(self.get_current_amount())
+    def get_current_amount_converted(self, amt=None):
+        if amt is not None:
+            return self.convert_to_resolution(amt)
+        else:
+            return self.convert_to_resolution(self.get_current_amount())
 
     def get_current_amount_mm_ss(self):
         return self.seconds_to_mm_ss(self.get_current_amount())
@@ -127,8 +130,11 @@ class Goal(models.Model):
     def get_current_elapsed_time_mm_ss(self):
         return self.seconds_to_mm_ss(self.get_current_elapsed_time())
 
-    def get_current_percentage(self):
-        return min((self.get_current_amount_converted() / self.target_amount) * 100.0, 100.0)
+    def get_current_percentage(self, amt=None):
+        if amt is not None:
+            return min((amt / self.target_amount) * 100.0, 100.0)
+        else:
+            return min((self.get_current_amount_converted() / self.target_amount) * 100.0, 100.0)
 
     def get_amount_for_day(self, day):
         # Get all entries for this goal on this day and sum up the amounts
@@ -169,6 +175,27 @@ class Goal(models.Model):
             target_amount = self.target_amount
 
         return min((self.get_amount_for_day_converted(day) / target_amount) * 100.0, 100.0)
+
+    def get_current_metadata(self):
+        current_amount = self.get_current_amount()
+        current_amount_converted = self.get_current_amount_converted(current_amount)
+        current_amount_mm_ss = self.seconds_to_mm_ss(current_amount)
+        current_elapsed = self.get_current_elapsed_time()
+        current_elapsed_mm_ss = self.seconds_to_mm_ss(current_elapsed)
+        current_percentage = self.get_current_percentage(current_amount_converted)
+        over = (current_amount_converted >= self.target_amount)
+
+        response = {
+            'current_amount': current_amount,
+            'current_amount_converted': current_amount_converted,
+            'current_amount_mm_ss': current_amount_mm_ss,
+            'current_elapsed': current_elapsed,
+            'current_elapsed_mm_ss': current_elapsed_mm_ss,
+            'current_percentage': current_percentage,
+            'over': over,
+        }
+
+        return response
 
     def daterange(self, start_date, end_date):
         for n in range(int ((end_date - start_date).days)):

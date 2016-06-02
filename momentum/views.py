@@ -145,6 +145,8 @@ def save(request, goal_id):
 
 def status(request):
     # Get all goals and return the current/elapsed times for each
+
+    import time
     goal_list = []
     goals = Goal.objects.filter(status='active')
 
@@ -154,20 +156,16 @@ def status(request):
     if web_key != '' and web_key == settings.WEB_KEY:
         for goal in goals:
             if goal.type in ['minutes', 'hours']:
-                current_amount = goal.get_current_amount()
-                current_elapsed = goal.get_current_elapsed_time()
-
-                # Whether we're over the target amount
-                over = (goal.get_current_amount_converted() >= goal.target_amount)
+                metadata = goal.get_current_metadata()
 
                 goal_list.append({
                     'id': goal.id,
                     'slug': goal.slug,
-                    'over': over,
-                    'current_amount': goal.seconds_to_mm_ss(current_amount),
-                    'current_elapsed': goal.seconds_to_mm_ss(current_elapsed),
-                    'current_elapsed_in_seconds': '{0:.0f}'.format(current_elapsed),
-                    'current_percentage': '{0:.2f}'.format(goal.get_current_percentage()),
+                    'over': metadata['over'],
+                    'current_amount': metadata['current_amount_mm_ss'],
+                    'current_elapsed': metadata['current_elapsed_mm_ss'],
+                    'current_elapsed_in_seconds': '{0:.0f}'.format(metadata['current_elapsed']),
+                    'current_percentage': '{0:.2f}'.format(metadata['current_percentage']),
                 })
 
         return JsonResponse(json.dumps(goal_list), safe=False)
