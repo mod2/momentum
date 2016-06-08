@@ -172,6 +172,7 @@ $(document).ready(function() {
 
 						if (parseFloat(data.total_amount) >= parseFloat(goalElement.find(".info .target").html())) {
 							goalElement.find(".percentage .bar").addClass("over");
+							goalElement.slideUp(150);
 						}
 
 						// Clear out the input
