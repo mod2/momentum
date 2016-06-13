@@ -1,3 +1,3 @@
 <div class="goal container" data-id="{{ goal.id }}">
-	<h2 class="goal-name"><span class="handle">=</span> <a href="{% url "goal" goal.id %}">{{ goal.name }}</a></h2>
+	<h2 class="goal-name"><span class="handle">=</span> <a href="{% url "goal" ctx.slug goal.id %}">{{ goal.name }}</a></h2>
 </div>

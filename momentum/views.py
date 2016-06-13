@@ -11,15 +11,25 @@ from datetime import datetime
 from django.conf import settings
 import json
 
-from .models import Goal, Entry, Folder
+from .models import Goal, Entry, Folder, Context
 
 @login_required
 def dashboard(request):
+    # Redirect to first context
+    ctx = Context.objects.first()
+    return redirect('context', context_slug=ctx.slug)
+
+@login_required
+def context_detail(request, context_slug):
     fullscreen = request.GET.get('fullscreen', False)
+
+    # Get the context
+    ctx = Context.objects.get(slug=context_slug)
 
     # Get all the user's goals
     unfoldered_goals = [x for x in Goal.objects.filter(Q(owner=request.user),
                                                     status='active',
+                                                    context__slug=context_slug,
                                                     folder__isnull=True)
                                                 .distinct()
                                                 .order_by('priority') if not x.done_today()]
@@ -27,46 +37,56 @@ def dashboard(request):
     # Now sort stale first
     unfoldered_goals = sorted(unfoldered_goals, key=lambda k: 1 - k.stale())
 
-    active_folders = Folder.objects.filter(Q(owner=request.user)).distinct().order_by('order')
+    active_folders = Folder.objects.filter(Q(owner=request.user, context__slug=context_slug)).distinct().order_by('order')
 
     # Get the latest entries
-    latest_entries = Entry.objects.filter(goal__owner=request.user).select_related('goal').order_by('-time')[:5]
+    latest_entries = Entry.objects.filter(goal__owner=request.user, goal__context__slug=context_slug).select_related('goal').order_by('-time')[:5]
 
-    return render_to_response('dashboard.html', {'unfoldered_goals': unfoldered_goals,
-                                                 'folders': active_folders,
-                                                 'request': request,
-                                                 'latest_entries': latest_entries,
-                                                 'fullscreen': fullscreen,
-                                                 'key': settings.WEB_KEY})
+    return render_to_response('context.html', {'unfoldered_goals': unfoldered_goals,
+                                               'ctx': ctx,
+                                                'folders': active_folders,
+                                                'request': request,
+                                                'latest_entries': latest_entries,
+                                                'fullscreen': fullscreen,
+                                                'key': settings.WEB_KEY})
 
 @login_required
-def organize(request):
+def organize(request, context_slug):
+    # Get the context
+    ctx = Context.objects.get(slug=context_slug)
+
     # Get all the user's goals
     unfoldered_goals = [x for x in Goal.objects.filter(Q(owner=request.user),
+                                                    context__slug=context_slug,
                                                     status='active',
                                                     folder__isnull=True)
                                                 .distinct()
                                                 .order_by('priority')]
 
-    active_folders = Folder.objects.filter(Q(owner=request.user)).distinct().order_by('order')
+    active_folders = Folder.objects.filter(Q(owner=request.user, context__slug=context_slug)).distinct().order_by('order')
 
     # Get the latest entries
     latest_entries = Entry.objects.filter(goal__owner=request.user).order_by('-time')[:5]
 
     return render_to_response('organize.html', {'unfoldered_goals': unfoldered_goals,
+                                                'ctx': ctx,
                                                 'folders': active_folders,
                                                 'request': request,
                                                 'latest_entries': latest_entries,
                                                 'key': settings.WEB_KEY})
 
 @login_required
-def goal(request, goal_id):
+def goal(request, context_slug, goal_id):
+    # Get the context
+    ctx = Context.objects.get(slug=context_slug)
+
     fullscreen = request.GET.get('fullscreen', False)
 
     # Get the goal
-    goal = Goal.objects.get(id=goal_id, owner=request.user)
+    goal = Goal.objects.get(id=goal_id, owner=request.user, context__slug=context_slug)
 
     return render_to_response('goal.html', {'goal': goal,
+                                            'ctx': ctx,
                                             'request': request,
                                             'fullscreen': fullscreen,
                                             'key': settings.WEB_KEY})
@@ -75,9 +95,11 @@ def goal(request, goal_id):
 # API calls
 
 @never_cache
-def timer(request, goal_id):
+def timer(request, context_slug, goal_id):
+    print("Here")
+
     # Get the goal
-    goal = Goal.objects.get(id=goal_id)
+    goal = Goal.objects.get(context__slug=context_slug, id=goal_id)
 
     # Get the web key and redirect flag
     web_key = request.GET.get('key', '')
@@ -119,9 +141,9 @@ def timer(request, goal_id):
         return JsonResponse(json.dumps({'status': 'error'}), safe=False)
 
 @never_cache
-def save(request, goal_id):
+def save(request, context_slug, goal_id):
     # Get the goal
-    goal = Goal.objects.get(id=goal_id)
+    goal = Goal.objects.get(context__slug=context_slug, id=goal_id)
 
     # Get the web key and redirect flag
     web_key = request.GET.get('key', '')
@@ -150,12 +172,12 @@ def save(request, goal_id):
         return JsonResponse(json.dumps({'status': 'error'}), safe=False)
 
 @never_cache
-def status(request):
+def status(request, context_slug):
     # Get all goals and return the current/elapsed times for each
 
     import time
     goal_list = []
-    goals = Goal.objects.filter(status='active')
+    goals = Goal.objects.filter(status='active', context__slug=context_slug)
 
     # Get the web key and redirect flag
     web_key = request.GET.get('key', '')
@@ -179,12 +201,12 @@ def status(request):
         return JsonResponse({'status': 'error'})
 
 @never_cache
-def update_goals(request):
+def update_goals(request, context_slug):
     if request.is_ajax() and request.method == 'POST':
         order = json.loads(request.body.decode('utf-8'))['order']
 
         for i, goal_id in enumerate(order):
-            goal = Goal.objects.get(id=goal_id)
+            goal = Goal.objects.get(id=goal_id, context__slug=context_slug)
             goal.priority = i
             goal.save()
 

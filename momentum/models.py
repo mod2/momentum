@@ -5,9 +5,44 @@ from django.utils import timezone
 from django.utils.timezone import utc
 from django.contrib import auth
 from datetime import datetime, timedelta, time
+import colorsys
+import math
 import pytz
 
 from autoslug import AutoSlugField
+
+class Context(models.Model):
+    name = models.CharField(max_length=255)
+    slug = AutoSlugField(populate_from='name')
+    owner = models.ForeignKey(auth.models.User, related_name='contexts', null=False, default=1)
+    color = models.IntegerField(null=True, blank=True, default=0)
+
+    def __str__(self):
+        return self.name
+
+    def as_hex(self, rgb):
+        """ Returns representation of color in hex. """
+        r = int(math.ceil(rgb[0] * 255))
+        g = int(math.ceil(rgb[1] * 255))
+        b = int(math.ceil(rgb[2] * 255))
+
+        return "#{:02x}{:02x}{:02x}".format(r, g, b)
+
+    def header_bg(self):
+        return self.as_hex(colorsys.hsv_to_rgb(self.color / 360, .46, .45))
+
+    def footer_bg(self):
+        return self.as_hex(colorsys.hsv_to_rgb(self.color / 360, .36, .35))
+
+    def header_text(self):
+        return self.as_hex(colorsys.hsv_to_rgb(self.color / 360, .26, .98))
+
+    def footer_text(self):
+        return self.as_hex(colorsys.hsv_to_rgb(self.color / 360, .26, .98))
+
+    def footer_head(self):
+        return self.as_hex(colorsys.hsv_to_rgb(self.color / 360, .46, .65))
+
 
 class Goal(models.Model):
     STATUS = (
@@ -21,7 +56,7 @@ class Goal(models.Model):
     status = models.CharField(max_length=255, choices=STATUS, default='active')
     priority = models.PositiveSmallIntegerField(null=False, default=30)
     owner = models.ForeignKey(auth.models.User, related_name='goals', null=False, default=1)
-
+    context = models.ForeignKey('Context', null=True, blank=True, related_name='goals')
     folder = models.ForeignKey('Folder', null=True, blank=True, related_name='goals')
 
     # Examples:
@@ -37,8 +72,12 @@ class Goal(models.Model):
 
     stale_period = models.PositiveSmallIntegerField(default=0)
 
-    def __unicode__(self):
-        return self.name
+    def __str__(self):
+        response = '{}/{}'.format(self.context.slug, self.slug)
+        if self.folder:
+            response += ' ({})'.format(self.folder.slug)
+
+        return response
 
     def in_progress(self):
         if self.type in ['words', 'times']:
@@ -357,9 +396,10 @@ class Folder(models.Model):
     slug = AutoSlugField(populate_from='name')
     order = models.PositiveSmallIntegerField(default=100)
     owner = models.ForeignKey(auth.models.User, related_name='folders', default=1)
+    context = models.ForeignKey('Context', null=True, blank=True, related_name='folders')
 
     def __str__(self):
-        return self.name
+        return '{}/{}'.format(self.context.slug, self.slug)
 
     def active_goals(self):
         goals = self.goals.filter(status='active').distinct().order_by('priority')

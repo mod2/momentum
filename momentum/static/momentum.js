@@ -11,34 +11,38 @@ $(document).ready(function() {
 	});
 
 	function updateTimers() {
-		$.ajax({
-			url: '/status/',
-			method: 'GET',
-			data: {
-				'key': webKey,
-			},
-			contentType: 'application/json',
-			success: function(data) {
-				for (i in data.goals) {
-					var goal = data.goals[i];
-					var goalElement = $(".goal[data-id=" + goal.id + "]");
+		var url = $("body").data("update-uri");
 
-					if (goalElement.find(".button.stop").length > 0) {
-						goalElement.find(".timer .num").html(goal.current_elapsed);
-						goalElement.find(".timer .seconds").html(goal.current_elapsed_in_seconds);
-						goalElement.find(".info .current").html(goal.current_amount);
-						goalElement.find(".percentage .bar").css("width", goal.current_percentage + "%");
+		if (url) {
+			$.ajax({
+				url: url,
+				method: 'GET',
+				data: {
+					'key': webKey,
+				},
+				contentType: 'application/json',
+				success: function(data) {
+					for (i in data.goals) {
+						var goal = data.goals[i];
+						var goalElement = $(".goal[data-id=" + goal.id + "]");
 
-						if (goal.over) {
-							goalElement.find(".percentage .bar").addClass("over");
+						if (goalElement.find(".button.stop").length > 0) {
+							goalElement.find(".timer .num").html(goal.current_elapsed);
+							goalElement.find(".timer .seconds").html(goal.current_elapsed_in_seconds);
+							goalElement.find(".info .current").html(goal.current_amount);
+							goalElement.find(".percentage .bar").css("width", goal.current_percentage + "%");
+
+							if (goal.over) {
+								goalElement.find(".percentage .bar").addClass("over");
+							}
 						}
 					}
-				}
-			},
-			error: function(data) {
-				console.log("error", data);
-			},
-		});
+				},
+				error: function(data) {
+					console.log("error", data);
+				},
+			});
+		}
 	}
 
 	function checkTimers() {
@@ -115,15 +119,18 @@ $(document).ready(function() {
 
 	// Start/stop buttons
 	$(".button.action").on("click touchstart", function() {
+		var goal = $(this).parents(".goal");
+
 		// Get the id of the goal we want
-		var goalId = $(this).parents(".goal").attr("data-id");
+		var goalId = goal.data("id");
+		var url = goal.data("timer-uri");
 		var button = $(this);
 
 		if (goalId != '') {
 			// Send in the timer request
 			// It's GET so we can use it in Launch Center Pro, Drafts, etc.
 			$.ajax({
-				url: '/' + goalId + '/timer/',
+				url: url,
 				method: 'GET',
 				data: {
 					'key': webKey,
@@ -145,8 +152,11 @@ $(document).ready(function() {
 
 	// Wordcount/times entry
 	$(".entry.action .save").on("click touchstart", function() {
-		// Get the ID of the goal we want
-		var goalId = $(this).parents(".goal").attr("data-id");
+		var goal = $(this).parents(".goal");
+
+		// Get the id of the goal we want
+		var goalId = goal.data("id");
+		var url = goal.data("timer-uri");
 
 		var parentWrapper = $(this).parents(".entry.action");
 		var amount = $(this).siblings("input.number-entry").val();
@@ -154,7 +164,7 @@ $(document).ready(function() {
 		if (goalId != '' && amount > 0) {
 			// Send in the request
 			$.ajax({
-				url: '/' + goalId + '/save/',
+				url: url,
 				method: 'GET',
 				data: {
 					'key': webKey,
@@ -203,14 +213,15 @@ $(document).ready(function() {
 			onUpdate: function(e) {
 				var item = $(e.item);
 				var order = [];
-				var items = item.parents(".goal-list").find(".goal");
+				var goalList = item.parents(".goal-list");
+				var items = goalList.find(".goal");
 
 				for (var i=0; i<items.length; i++) {
 					var item = $(items[i]);
 					order.push(parseInt(item.attr("data-id")));
 				}
 
-				var url = '/update-goals/';
+				var url = goalList.data("sort-uri");
 
 				$.ajax({
 					url: url,

@@ -25,11 +25,11 @@
 		var webKey = "{{ key }}";
 	</script>
 </head>
-<body>
-	<header>
+<body data-update-uri="{% url 'status' ctx.slug %}" {% if ctx.color %}style="background: {{ ctx.footer_bg }};"{% endif %}>
+	<header{% if ctx.color %} style="color: {{ ctx.header_text }}; background: {{ ctx.header_bg }}"{% endif %}>
 		<h1>
-			{% if request.user %}<div class="controls"><a href="{% url "organize" %}">organize</a> &mdash; <a href="{% url "logout" %}">logout</a></div>{% endif %}
-			<a href="{% url "dashboard" %}">momentum</a>
+			{% if request.user %}<div class="controls" style="color: {{ ctx.footer_head }}"><a href="{% url "organize" ctx.slug %}" style="color: {{ ctx.header_text }}">organize</a> &mdash; <a style="color: {{ ctx.header_text }}" href="{% url "logout" %}">logout</a></div>{% endif %}
+			<a href="{% url "context" ctx.slug %}" style="color: {{ ctx.header_text }}">momentum</a>
 		</h1>
 	</header>
 
@@ -37,7 +37,7 @@
 	{% block content %}{% endblock content %}
 	</div>
 
-	<div id="footer">
+	<div id="footer" {% if ctx.color %} style="color: {{ ctx.footer_text }}"{% endif %}>
 	{% block footer %}{% endblock footer %}
 	</div>
 </body>
