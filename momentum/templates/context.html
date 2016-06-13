@@ -3,7 +3,7 @@
 {% block content %}
 
 {% if unfoldered_goals %}
-<section class="goal-list" data-sort-uri="{% url 'update_goals' ctx.slug %}">
+<section class="goal-list">
 {% for goal in unfoldered_goals %}
 	<div class="goal container{% if goal.in_progress %} running{% endif %}{% if goal.stale %} stale{% endif %}" data-id="{{ goal.id }}" data-timer-uri="{% url 'timer' ctx.slug goal.id %}">
 		{% if goal.type == 'minutes' %}
@@ -39,7 +39,7 @@
 {% if folder.active_goals_today|length > 0 %}
 <h2 class="folder-name container">{{ folder.name }}</h2>
 
-<section class="goal-list" data-sort-uri="{% url 'update_goals' ctx.slug %}">
+<section class="goal-list">
 {% for goal in folder.active_goals_today %}
 	<div class="goal container{% if goal.in_progress %} running{% endif %}{% if goal.stale %} stale{% endif %}" data-id="{{ goal.id }}" data-timer-uri="{% url 'timer' ctx.slug goal.id %}">
 		{% if goal.type == 'minutes' %}

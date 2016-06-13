@@ -3,7 +3,7 @@
 {% block content %}
 
 {% if unfoldered_goals %}
-<section class="goal-list sortable">
+<section class="goal-list sortable" data-sort-uri="{% url 'update_goals' ctx.slug %}">
 {% for goal in unfoldered_goals %}
 	{% include '_goal_organize.html' %}
 {% endfor %}
@@ -14,7 +14,7 @@
 {% if folder.active_goals|length > 0 %}
 <h2 class="folder-name container">{{ folder.name }}</h2>
 
-<section class="goal-list sortable">
+<section class="goal-list sortable" data-sort-uri="{% url 'update_goals' ctx.slug %}">
 {% for goal in folder.active_goals %}
 	{% include '_goal_organize.html' %}
 {% endfor %}
