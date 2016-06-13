@@ -32,7 +32,7 @@ class Context(models.Model):
         return self.as_hex(colorsys.hsv_to_rgb(self.color / 360, .46, .45))
 
     def footer_bg(self):
-        return self.as_hex(colorsys.hsv_to_rgb(self.color / 360, .36, .35))
+        return self.as_hex(colorsys.hsv_to_rgb(self.color / 360, .36, .25))
 
     def header_text(self):
         return self.as_hex(colorsys.hsv_to_rgb(self.color / 360, .26, .98))
