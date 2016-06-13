@@ -156,7 +156,7 @@ $(document).ready(function() {
 
 		// Get the id of the goal we want
 		var goalId = goal.data("id");
-		var url = goal.data("timer-uri");
+		var url = goal.data("save-uri");
 
 		var parentWrapper = $(this).parents(".entry.action");
 		var amount = $(this).siblings("input.number-entry").val();
