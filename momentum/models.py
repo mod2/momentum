@@ -64,16 +64,18 @@ class Goal(models.Model):
     # target_amount=1, type=times, period=day
     # target_amount=10, type=times, period=year
     # target_amount=50000, type=words
-    target_amount = models.PositiveSmallIntegerField(default=5)
+    target_amount = models.PositiveSmallIntegerField(default=1)
     type = models.CharField(max_length=255, default='minutes') # times/minutes/hours/words/pages/etc.
     period = models.CharField(max_length=255, blank=True, null=True, default='day') # day/week/month/year, optional
 
-    # deadline
-
     stale_period = models.PositiveSmallIntegerField(default=0)
 
+    visibility_period = models.PositiveSmallIntegerField(default=0)
+    last_entry_date = models.DateField(null=True, blank=True, default=timezone.now())
+    last_completed_date = models.DateField(null=True, blank=True, default=timezone.now())
+
     def __str__(self):
-        response = '{}/{}'.format(self.context.slug, self.slug)
+        response = '{}/{}'.format(self.context.slug, self.name)
         if self.folder:
             response += ' ({})'.format(self.folder.slug)
 
@@ -94,6 +96,9 @@ class Goal(models.Model):
     
     def done_today(self):
         if self.get_current_amount_converted() >= self.target_amount and not self.in_progress():
+            return True
+
+        if self.visibility_period > 0 and (timezone.now().date() - self.last_completed_date).days < self.visibility_period:
             return True
         
         return False
@@ -331,6 +336,10 @@ class Goal(models.Model):
 
         stale_period = self.get_stale_period()
 
+        # Take the visibility period into account if it's there
+        if self.visibility_period > 0:
+            stale_period += self.visibility_period
+
         if self.status == 'active' and stale_period != 0 and self.days_since_last_entry() > stale_period:
             return True
 
@@ -410,16 +419,13 @@ class Folder(models.Model):
         return goals
 
     def active_goals_today(self):
-
+        foo = [x for x in self.goals.filter(status='active').distinct().order_by('priority')]
         goals = [x for x in self.goals.filter(status='active').distinct().order_by('priority') if not x.done_today()]
 
         # Now sort stale first
         goals = sorted(goals, key=lambda k: 1 - k.stale())
 
         return goals
-        return [x for x in self.goals.filter(status='active')
-                                    .distinct()
-                                    .order_by('priority') if not x.done_today()]
 
 
     class Meta:

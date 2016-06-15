@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404, redirect
+from django.utils import timezone
 from django.utils.timezone import utc
 from django.views.decorators.cache import never_cache
 from datetime import datetime
@@ -96,8 +97,6 @@ def goal(request, context_slug, goal_id):
 
 @never_cache
 def timer(request, context_slug, goal_id):
-    print("Here")
-
     # Get the goal
     goal = Goal.objects.get(context__slug=context_slug, id=goal_id)
 
@@ -124,12 +123,21 @@ def timer(request, context_slug, goal_id):
                 latest_entry.amount = (latest_entry.stop_time - latest_entry.time).total_seconds()
                 latest_entry.save()
                 current_amount = goal.get_current_amount_converted()
+
+                # Check if we're done
+                if current_amount >= goal.target_amount:
+                    goal.last_completed_date = timezone.now()
+                    # This gets saved in a minute
         else:
             # Nothing yet, so create a new entry and start it
             entry = Entry()
             entry.goal = goal
             entry.target_amount = goal.target_amount
             entry.save()
+
+        # Update last_entry_date
+        goal.last_entry_date = timezone.now()
+        goal.save()
 
         if redirect == 'true':
             # TODO: update this to use django.shortcuts.redirect
@@ -157,6 +165,16 @@ def save(request, context_slug, goal_id):
         entry.amount = amount
         entry.target_amount = goal.target_amount
         entry.save()
+
+        # Update last_entry_date
+        goal.last_entry_date = timezone.now()
+
+        # Check if we're done
+        if current_amount >= goal.target_amount:
+            goal.last_completed_date = timezone.now()
+
+        # Save any goal changes
+        goal.save()
 
         if redirect == 'true':
             # TODO: update this to use django.shortcuts.redirect
