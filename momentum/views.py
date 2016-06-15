@@ -170,7 +170,7 @@ def save(request, context_slug, goal_id):
         goal.last_entry_date = timezone.now()
 
         # Check if we're done
-        if current_amount >= goal.target_amount:
+        if goal.get_current_amount_converted() >= goal.target_amount:
             goal.last_completed_date = timezone.now()
 
         # Save any goal changes

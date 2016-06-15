@@ -180,6 +180,9 @@ $(document).ready(function() {
 						goalElement.find(".info .current").html(data.total_amount);
 						goalElement.find(".percentage .bar").css("width", data.percentage + "%");
 
+						// Remove the stale class if it's there
+						goalElement.removeClass("stale");
+
 						if (parseFloat(data.total_amount) >= parseFloat(goalElement.find(".info .target").html())) {
 							goalElement.find(".percentage .bar").addClass("over");
 							goalElement.slideUp(150);
