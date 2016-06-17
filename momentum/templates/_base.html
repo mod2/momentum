@@ -25,11 +25,11 @@
 		var webKey = "{{ key }}";
 	</script>
 </head>
-<body data-update-uri="{% url 'status' ctx.slug %}" {% if ctx.color %}style="background: {{ ctx.footer_bg }};"{% endif %}>
+<body {% if ctx %}data-update-uri="{% url 'status' ctx.slug %}" {% if ctx.color %}style="background: {{ ctx.footer_bg }};"{% endif %}{% endif %}>
 	<header{% if ctx.color %} style="color: {{ ctx.header_text }}; background: {{ ctx.header_bg }}"{% endif %}>
 		<h1>
-			{% if request.user %}<div class="controls" style="color: {{ ctx.footer_head }}"><a href="{% url "organize" ctx.slug %}" style="color: {{ ctx.header_text }}">organize</a> &mdash; <a style="color: {{ ctx.header_text }}" href="{% url "logout" %}">logout</a></div>{% endif %}
-			<a href="{% url "context" ctx.slug %}" style="color: {{ ctx.header_text }}">momentum</a>
+			{% if request.user %}<div class="controls" style="color: {{ ctx.footer_head }}">{% if ctx %}<a href="{% url "organize" ctx.slug %}" style="color: {{ ctx.header_text }}">organize</a> &mdash; {% endif %}<a style="color: {{ ctx.header_text }}" href="{% url "logout" %}">logout</a></div>{% endif %}
+			{% if ctx %}<a href="{% url "context" ctx.slug %}" style="color: {{ ctx.header_text }}">momentum</a>{% else %}<a href="">momentum</a>{% endif %}
 		</h1>
 	</header>
 
