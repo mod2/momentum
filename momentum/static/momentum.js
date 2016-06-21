@@ -214,6 +214,7 @@ $(document).ready(function() {
 			handle: ".handle",
 			ghostClass: "placeholder",
 			onUpdate: function(e) {
+				console.log("here");
 				var item = $(e.item);
 				var order = [];
 				var goalList = item.parents(".goal-list");
@@ -223,6 +224,7 @@ $(document).ready(function() {
 					var item = $(items[i]);
 					order.push(parseInt(item.attr("data-id")));
 				}
+				console.log(order);
 
 				var url = goalList.data("sort-uri");
 

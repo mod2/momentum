@@ -222,8 +222,10 @@ def status(request, context_slug):
 def update_goals(request, context_slug):
     if request.is_ajax() and request.method == 'POST':
         order = json.loads(request.body.decode('utf-8'))['order']
+        print(order)
 
         for i, goal_id in enumerate(order):
+            print(i, goal_id)
             goal = Goal.objects.get(id=goal_id, context__slug=context_slug)
             goal.priority = i
             goal.save()
