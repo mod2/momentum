@@ -407,7 +407,7 @@ class Folder(models.Model):
     context = models.ForeignKey('Context', null=True, blank=True, related_name='folders')
 
     def __str__(self):
-        return '{}/{}'.format(self.context.slug, self.slug)
+        return '{}/{}'.format(self.context.slug, self.name)
 
     def active_goals(self):
         goals = self.goals.filter(status='active').distinct().order_by('priority')
